@@ -1,12 +1,7 @@
-######################################################
-# Attempting to make a VHDL paser using Python PLY
-# GNU License
-# William P. Moore
-# 8/8/2024
-######################################################
-
+# PLY Yacc script generated from vhdl.g4
 import ply.yacc as yacc
-from vhdl_lexer import tokens
+from vhdlply_lexer import tokens
+
 
 start =  'design_file'
 
@@ -2582,8 +2577,17 @@ def p_empty(p):
 def p_error(p):
     print("Syntax error in input!")
 
+import logging
+log = logging.getLogger('ply')
+logging.basicConfig(
+    level = logging.DEBUG,
+    filename = "parselog.txt",
+    filemode = "w",
+    format = "%(filename)10s:%(lineno)4d:%(message)s"
+)
+
 # Build the parser
-import ply.yacc as yacc
+#parser = yacc.yacc(debug=True, errorlog=log)
 parser = yacc.yacc()
 
 

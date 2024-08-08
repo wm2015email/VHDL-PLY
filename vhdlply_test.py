@@ -5,8 +5,8 @@
 # 8/8/2024
 ######################################################
 
-from vhdl_lexer import lexer
-from vhdl_yacc import parser
+from vhdlply_lexer import lexer
+from vhdlply_yacc  import parser
 
 # Test cases
 test_cases = [
@@ -37,7 +37,7 @@ test_cases = [
 def process_test_case(i, data):
     print(f"\n=> Test Case {i}:")
     print(data)
-    print(f"\n-> parse")    
+    print(f"\n-> parse") 
     result = parser.parse(data)
     print("Result:", result)
     print("\n" + "="*80 + "\n")

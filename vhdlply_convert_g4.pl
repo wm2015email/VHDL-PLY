@@ -11,7 +11,7 @@ use strict;
 use warnings;
 
 my $input_file = 'vhdl.g4'; # Change this to your actual file _
-my $output_file = 'vhdl_yacc.py';
+my $output_file = 'vhdlply_yacc.py';
 
 open(my $in,  '<', $input_file) or die "Could not open file '$input_file' $!";
 open(my $out, '>', $output_file) or die "Could not open file '$output_file' $!";
@@ -21,7 +21,7 @@ print "reading: $output_file\n";
 
 print $out "# PLY Yacc script generated from vhdl.g4\n";
 print $out "import ply.yacc as yacc\n";
-print $out "from vhdl_lexer import tokens\n\n";  # Assuming a separate vhdl_lex.py file for tokens
+print $out "from vhdlply_lexer import tokens\n\n";  # Assuming a separate vhdl_lex.py file for tokens
 print $out "\n";
 print $out "start =  'design_file'\n";
 print $out "\n";
@@ -235,19 +235,28 @@ for my $rule_curr (@rule_list) {
 }
 
 my @out = (
-"# Define the empty rule to handle the zero occurrences case",
-"def p_empty(p):",
-"    'empty :'",
-"    pass",
-"",
-"# Error rule for syntax errors",
-"def p_error(p):",
-"    print(\"Syntax error in input!\")",
-"",
-"# Build the parser",
-"import ply.yacc as yacc",
-"parser = yacc.yacc()",
-"",
+  "# Define the empty rule to handle the zero occurrences case",
+  "def p_empty(p):",
+  "    'empty :'",
+  "    pass",
+  "",
+  "# Error rule for syntax errors",
+  "def p_error(p):",
+  "    print(\"Syntax error in input!\")",
+  "",
+  "import logging",
+  "log = logging.getLogger('ply')",
+  "logging.basicConfig(",
+  "    level = logging.DEBUG,",
+  "    filename = \"parselog.txt\",",
+  "    filemode = \"w\",",
+  "    format = \"%(filename)10s:%(lineno)4d:%(message)s\"",
+  ")",
+  "",
+  "# Build the parser",
+  "#parser = yacc.yacc(debug=True, errorlog=log)",
+  "parser = yacc.yacc()",
+  ""
 );
 
 
