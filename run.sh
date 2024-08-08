@@ -5,6 +5,8 @@
 set -o errexit
 set -o verbose
 
+rm -rf __pycache__
+rm -rf parsetab.py
 rm -rf parser.out
 rm -rf parserun.log
 
