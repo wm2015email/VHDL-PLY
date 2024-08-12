@@ -674,8 +674,9 @@ def p_entity_declaration(p):
     entity_declaration : ENTITY identifier IS entity_header entity_declarative_part warp28_a1mark END ENTITY_a1mark identifier_a1mark SEMI
     '''
     print("\n=> entity_declaration", p[1:])
-    print("\n===> entity =>", p[2][0], "  lexpos:", p.lexpos(2))
+    print("\n===> entity =>", p[2][0], "lineno: ", p.lineno(2), " lexpos:", p.lexpos(2))
     p[0] = p[1:]
+    exit(1)
 
 def p_entity_declarative_item(p):
     '''

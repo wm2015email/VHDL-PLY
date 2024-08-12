@@ -11,6 +11,9 @@ from vhdlply_yacc  import parser
 # Test cases
 test_cases = [
     '''
+    Library ieee;
+    USE ieee.std_logic_vector.all;
+    
     ENTITY MyEntity is
         port(
             clk : in std_logic;
@@ -38,7 +41,7 @@ def process_test_case(i, data):
     print(f"\n=> Test Case {i}:")
     print(data)
     print(f"\n-> parse") 
-    result = parser.parse(data)
+    result = parser.parse(data,tracking=True)
     print("Result:", result)
     print("\n" + "="*80 + "\n")
 

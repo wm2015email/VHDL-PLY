@@ -14,10 +14,10 @@ tokens = [
     'BIT_STRING_LITERAL_OCTAL',
     'BIT_STRING_LITERAL_HEX',
     'REAL_LITERAL',
-    'BASIC_IDENTIFIER',
     'EXTENDED_IDENTIFIER',
     'CHARACTER_LITERAL',
     'STRING_LITERAL',
+    'BASIC_IDENTIFIER',
     
     'COMMENT',
     'TAB',
@@ -76,57 +76,134 @@ tokens = [
     'XNOR', 'XOR'
 ]
 
-# Define the regular expressions for the tokens
-t_BASE_LITERAL = r'(\d+)[#](\w+)(\.\w+)?[#]([eE][+\-]?\d+)?'
-t_BIT_STRING_LITERAL_BINARY = r'B"([01_]+)"'
-t_BIT_STRING_LITERAL_OCTAL = r'O"([0-7_]+)"'
-t_BIT_STRING_LITERAL_HEX = r'X"([0-9A-F_]+)"'
-t_REAL_LITERAL = r'(\d+)\.(\d+)([eE][+\-]?\d+)?'
-t_BASIC_IDENTIFIER = r'[A-Z]([A-Z0-9_]*[A-Z0-9])*'
-t_EXTENDED_IDENTIFIER = r'\\([\w&\'()+,./:;<=| \[\]@#-]+)\\'
-t_COMMENT = r'--[^\n]*'
-t_TAB = r'\t+'
-#t_SPACE = r' +'
-t_NEWLINE = r'\n'
-t_CR = r'\r'
-t_CHARACTER_LITERAL = r"'.'"
-t_STRING_LITERAL = r'"([^"\n\r]|"")*"'
-t_OTHER_SPECIAL_CHARACTER = r'[!$%@?^`{}~ \u00A4\u00A6\u00A7\u00A9\u00AB\u00AC\u00AD\u00AE\u00B0\u00B1\u00B5\u00B6\u00B7\u2116\u00BB\u0400-\u045E]'
-t_DOUBLESTAR = r'\*\*'
-t_ASSIGN = r'=='
-t_LE = r'<='
-t_GE = r'>='
-t_ARROW = r'=>'
-t_NEQ = r'/='
-t_VARASGN = r':='
-t_BOX = r'<>'
-t_DBLQUOTE = r'"'
-t_SEMI = r';'
-t_COMMA = r','
-t_AMPERSAND = r'&'
-t_LPAREN = r'\('
-t_RPAREN = r'\)'
-t_LBRACKET = r'\['
-t_RBRACKET = r'\]'
-t_COLON = r':'
-t_MUL = r'\*'
-t_DIV = r'/'
-t_PLUS = r'\+'
-t_MINUS = r'-'
-t_LOWERTHAN = r'<'
-t_GREATERTHAN = r'>'
-t_EQ = r'='
-t_BAR = r'\|'
-t_DOT = r'\.'
-t_BACKSLASH = r'\\'
-t_EXPONENT = r'[eE][+\-]?\d+'
-t_HEXDIGIT = r'[A-F]'
-t_INTEGER = r'\d+(_?\d+)*'
-t_DIGIT = r'\d'
-t_BASED_INTEGER = r'[0-9A-Z](_?[0-9A-Z])*'
-t_EXTENDED_DIGIT = r'[0-9A-Z]'
-t_APOSTROPHE = r"'"
+# Order of Token matching is as follows:
+#   1. Def's in order they are defined
+#   2. after all def's are matched then string rules are matched
+#      except string matches give preceedence to the longest string first.
+    
+# Define a rule for keywords (case-insensitive)
+def t_KEYWORD(t):
+    r'(?i)ABS|ACCESS|ACROSS|AFTER|ALIAS|ALL|AND|ARCHITECTURE|ARRAY|ASSERT|ATTRIBUTE|BEGIN|BLOCK|BODY|BREAK|BUFFER|BUS|CASE|COMPONENT|CONFIGURATION|CONSTANT|DISCONNECT|DOWNTO|END|ENTITY|ELSE|ELSIF|EXIT|FILE|FOR|FUNCTION|GENERATE|GENERIC|GROUP|GUARDED|IF|IMPURE|INERTIAL|INOUT|IN|IS|LABEL|LIBRARY|LIMIT|LINKAGE|LITERAL|LOOP|MAP|MOD|NAND|NATURE|NEW|NEXT|NOISE|NOR|NOT|NULL_|OF|ON|OPEN|OR|OTHERS|OUT|PACKAGE|PORT|POSTPONED|PROCESS|PROCEDURE|PROCEDURAL|PURE|QUANTITY|RANGE|REVERSE_RANGE|REJECT|REM|RECORD|REFERENCE|REGISTER|REPORT|RETURN|ROL|ROR|SELECT|SEVERITY|SHARED|SIGNAL|SLA|SLL|SPECTRUM|SRA|SRL|SUBNATURE|SUBTYPE|TERMINAL|THEN|THROUGH|TOLERANCE|TO|TRANSPORT|TYPE|UNAFFECTED|UNITS|UNTIL|USE|VARIABLE|WAIT|WITH|WHEN|WHILE|XNOR|XOR'
+    # This reassigns type from KEYWORD to the Matched value. 
+    t.type = t.value.upper()
+    return t
 
+# Define the regular expressions for the tokens
+def t_BASE_LITERAL(t):
+    r'(\d+)[#](\w+)(\.\w+)?[#]([eE][+\-]?\d+)?'
+    return t
+
+def t_BIT_STRING_LITERAL_BINARY(t):
+    r'B"([01_]+)"'
+    return t
+
+def t_BIT_STRING_LITERAL_OCTAL(t):
+    r'O"([0-7_]+)"'
+    return t
+
+def t_BIT_STRING_LITERAL_HEX(t):
+    r'X"([0-9A-F_]+)"'
+    return t
+
+def t_REAL_LITERAL(t):
+    r'(\d+)\.(\d+)([eE][+\-]?\d+)?'
+    return t
+
+def t_EXTENDED_IDENTIFIER(t):
+    r'\\([\w&\'()+,./:;<=| \[\]@#-]+)\\'
+    return t
+
+#def t_CHARACTER_LITERAL(t):
+#    r"'.'"
+#    return t
+
+#def t_STRING_LITERAL(t):
+#    r'"([^"\n\r]|"")*"'
+#    return t
+
+def t_EXPONENT(t):
+    r'[eE][+\-]?\d+'
+    return t
+
+#def t_HEXDIGIT(t):
+#    r'[A-F]'
+#    return t
+
+#def t_INTEGER(t):
+#    r'\d+(_?\d+)*'
+#    return t
+
+#def t_DIGIT(t):
+#    r'\d'
+#    return t
+
+#def t_BASED_INTEGER(t):
+#    r'[0-9A-Z](_?[0-9A-Z])*'
+#    return t
+
+#def t_EXTENDED_DIGIT(t):
+#    r'[0-9A-Z]'
+#    return t
+
+def t_BASIC_IDENTIFIER(t):
+    r'[A-Z]([A-Z0-9_]*[A-Z0-9])*'
+    return t
+
+
+#t_BASE_LITERAL              = r'(\d+)[#](\w+)(\.\w+)?[#]([eE][+\-]?\d+)?'
+#t_BIT_STRING_LITERAL_BINARY = r'B"([01_]+)"'
+#t_BIT_STRING_LITERAL_OCTAL  = r'O"([0-7_]+)"'
+#t_BIT_STRING_LITERAL_HEX    = r'X"([0-9A-F_]+)"'
+#t_REAL_LITERAL              = r'(\d+)\.(\d+)([eE][+\-]?\d+)?'
+#t_EXTENDED_IDENTIFIER       = r'\\([\w&\'()+,./:;<=| \[\]@#-]+)\\'
+t_CHARACTER_LITERAL         = r"'.'"
+t_STRING_LITERAL            = r'"([^"\n\r]|"")*"'
+#t_EXPONENT                  = r'[eE][+\-]?\d+'
+t_HEXDIGIT                  = r'[A-F]'
+t_INTEGER                   = r'\d+(_?\d+)*'
+t_DIGIT                     = r'\d'
+t_BASED_INTEGER             = r'[0-9A-Z](_?[0-9A-Z])*'
+t_EXTENDED_DIGIT            = r'[0-9A-Z]'
+#t_BASIC_IDENTIFIER          = r'([A-Z0-9_])'
+
+
+
+t_COMMENT     = r'--[^\n]*'
+
+t_DOUBLESTAR  = r'\*\*'
+t_ASSIGN      = r'=='
+t_LE          = r'<='
+t_GE          = r'>='
+t_ARROW       = r'=>'
+t_NEQ         = r'/='
+t_VARASGN     = r':='
+t_BOX         = r'<>'
+t_DBLQUOTE    = r'"'
+t_SEMI        = r';'
+t_COMMA       = r','
+t_AMPERSAND   = r'&'
+t_LPAREN      = r'\('
+t_RPAREN      = r'\)'
+t_LBRACKET    = r'\['
+t_RBRACKET    = r'\]'
+t_COLON       = r':'
+t_MUL         = r'\*'
+t_DIV         = r'/'
+t_PLUS        = r'\+'
+t_MINUS       = r'-'
+t_LOWERTHAN   = r'<'
+t_GREATERTHAN = r'>'
+t_EQ          = r'='
+t_BAR         = r'\|'
+t_DOT         = r'\.'
+t_BACKSLASH   = r'\\'
+t_APOSTROPHE  = r"'"
+
+#t_TAB = r'\t+'
+#t_SPACE = r' +'
+#t_NEWLINE = r'\n'
+#t_CR = r'\r'
+t_OTHER_SPECIAL_CHARACTER = r'[!$%@?^`{}~ \u00A4\u00A6\u00A7\u00A9\u00AB\u00AC\u00AD\u00AE\u00B0\u00B1\u00B5\u00B6\u00B7\u2116\u00BB\u0400-\u045E]'
 
 # Ignored characters
 t_ignore = ' \t\r'
@@ -136,11 +213,6 @@ def t_newline(t):
     r'\n+'
     t.lexer.lineno += len(t.value)
 
-# Define a rule for keywords (case-insensitive)
-def t_KEYWORD(t):
-    r'(?i)ABS|ACCESS|ACROSS|AFTER|ALIAS|ALL|AND|ARCHITECTURE|ARRAY|ASSERT|ATTRIBUTE|BEGIN|BLOCK|BODY|BREAK|BUFFER|BUS|CASE|COMPONENT|CONFIGURATION|CONSTANT|DISCONNECT|DOWNTO|END|ENTITY|ELSE|ELSIF|EXIT|FILE|FOR|FUNCTION|GENERATE|GENERIC|GROUP|GUARDED|IF|IMPURE|INERTIAL|INOUT|IN|IS|LABEL|LIBRARY|LIMIT|LINKAGE|LITERAL|LOOP|MAP|MOD|NAND|NATURE|NEW|NEXT|NOISE|NOR|NOT|NULL_|OF|ON|OPEN|OR|OTHERS|OUT|PACKAGE|PORT|POSTPONED|PROCESS|PROCEDURE|PROCEDURAL|PURE|QUANTITY|RANGE|REVERSE_RANGE|REJECT|REM|RECORD|REFERENCE|REGISTER|REPORT|RETURN|ROL|ROR|SELECT|SEVERITY|SHARED|SIGNAL|SLA|SLL|SPECTRUM|SRA|SRL|SUBNATURE|SUBTYPE|TERMINAL|THEN|THROUGH|TOLERANCE|TO|TRANSPORT|TYPE|UNAFFECTED|UNITS|UNTIL|USE|VARIABLE|WAIT|WITH|WHEN|WHILE|XNOR|XOR'
-    t.type = t.value.upper()
-    return t
 
 # Define an error rule
 def t_error(t):
@@ -181,9 +253,11 @@ xnor XOR
 # Give the lexer some input
 lexer.input(data)
 
+
 # Tokenize
 while True:
     tok = lexer.token()
     if not tok:
         break  # No more input
-    print(tok)
+    print(f"TOKEN: lineno:{tok.lineno:<4} lexpos:{tok.lexpos:<4} type:{tok.type:<30} value:{tok.value}")
+    
