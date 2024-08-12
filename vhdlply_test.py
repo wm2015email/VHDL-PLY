@@ -52,12 +52,23 @@ def print_tree(data, indent=0):
         print(' ' * indent + str(data))
         
         
+def get_file(file_path):
+    try:
+        with open(file_path, 'r') as file:
+            file_content = file.read()
+            return file_content
+    except FileNotFoundError:
+        print(f"Error: the file '{file_path}' was not found")
+        return None
+ 
+            
 # Function to process each test case
-def process_test_case(i, data):
-    print_test(i, data)
+def process_test_case(file_path):
+    data = get_file(file_path);
+    print_test(file_path, data)
     print(f"\n-> parse") 
     # Reset Lexer State between files
-    lexer.file   = f"noname{i}.vhdl"
+    lexer.file   = file_path
     lexer.lineno = 1
     lexer.input('')
     result = parser.parse(data,lexer=lexer,tracking=True)
@@ -67,9 +78,9 @@ def process_test_case(i, data):
     
 # Function to test the parser
 def test_parser(test_cases):
-    process_test_case(1, test_cases[0])
-    #for i, data in enumerate(test_cases, 1):
-    #    process_test_case(i, data)                                 
+    #process_test_case("test_001.vhd")
+    #process_test_case("test_002.vhd")
+    process_test_case("test_003.vhd")
     
 
 # Run the tests

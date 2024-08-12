@@ -3371,7 +3371,9 @@ def p_empty(p):
 
 # Error rule for syntax errors
 def p_error(p):
-    print("Syntax error in input!")
+    print(f"PARSE ERROR: value:{p.value} lineno:{p.lineno} pos:{p.lexpos} type:{p.type}\n")
+    
+    exit(-1);
 
 import logging
 log = logging.getLogger('ply')
