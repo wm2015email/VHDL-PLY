@@ -78,9 +78,9 @@ def process_test_case(file_path):
     
 # Function to test the parser
 def test_parser(test_cases):
-    #process_test_case("test_001.vhd")
+    process_test_case("test_001.vhd")
     #process_test_case("test_002.vhd")
-    process_test_case("test_003.vhd")
+    #process_test_case("test_003.vhd")
     
 
 # Run the tests
