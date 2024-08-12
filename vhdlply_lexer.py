@@ -18,7 +18,6 @@ tokens = [
     'CHARACTER_LITERAL',
     'STRING_LITERAL',
     'BASIC_IDENTIFIER',
-    
     'COMMENT',
     'TAB',
 #    'SPACE',
@@ -76,10 +75,20 @@ tokens = [
     'XNOR', 'XOR'
 ]
 
+def get_colpos(input, token):
+    line_start = input.rfind('\n', 0, token.lexpos) + 1
+    return (token.lexpos - line_start) + 1
+    
+
 # Order of Token matching is as follows:
 #   1. Def's in order they are defined
 #   2. after all def's are matched then string rules are matched
 #      except string matches give preceedence to the longest string first.
+
+# Define a rule for newlines (which is ignored)
+def t_newline(t):
+    r'\n+'
+    t.lexer.lineno += len(t.value)
     
 # Define a rule for keywords (case-insensitive)
 def t_KEYWORD(t):
@@ -149,6 +158,10 @@ def t_BASIC_IDENTIFIER(t):
     r'[A-Z]([A-Z0-9_]*[A-Z0-9])*'
     return t
 
+def t_COMMENT(t):
+    r'--[^\n]*'
+    # pass means skip this token
+    pass
 
 #t_BASE_LITERAL              = r'(\d+)[#](\w+)(\.\w+)?[#]([eE][+\-]?\d+)?'
 #t_BIT_STRING_LITERAL_BINARY = r'B"([01_]+)"'
@@ -168,7 +181,7 @@ t_EXTENDED_DIGIT            = r'[0-9A-Z]'
 
 
 
-t_COMMENT     = r'--[^\n]*'
+#t_COMMENT     = r'--[^\n]*'
 
 t_DOUBLESTAR  = r'\*\*'
 t_ASSIGN      = r'=='
@@ -208,10 +221,6 @@ t_OTHER_SPECIAL_CHARACTER = r'[!$%@?^`{}~ \u00A4\u00A6\u00A7\u00A9\u00AB\u00AC\u
 # Ignored characters
 t_ignore = ' \t\r'
 
-# Define a rule for newlines (which is ignored)
-def t_newline(t):
-    r'\n+'
-    t.lexer.lineno += len(t.value)
 
 
 # Define an error rule
@@ -259,5 +268,6 @@ while True:
     tok = lexer.token()
     if not tok:
         break  # No more input
-    print(f"TOKEN: lineno:{tok.lineno:<4} lexpos:{tok.lexpos:<4} type:{tok.type:<30} value:{tok.value}")
+    colpos = get_colpos(data, tok)
+    print(f"TOKEN: lineno:{tok.lineno:<4} colpos:{colpos:<4} type:{tok.type:<30} value:{tok.value}")
     
