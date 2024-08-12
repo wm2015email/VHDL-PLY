@@ -225,7 +225,6 @@ for my $rule_curr (@rule_list) {
 		
 	$inum   = 4*1; $indent = " " x $inum;		
     print $out "${indent}'''\n";
-		
 	my @rule_curr = split(/\n/, $rule_curr);
 	for my $x (@rule_curr) {
         print $out "${indent}$x\n";
@@ -233,6 +232,8 @@ for my $rule_curr (@rule_list) {
 	} 
 	$inum   = 4*1; $indent = " " x $inum;
 	print $out "${indent}'''\n";
+	print $out "${indent}print(\"\\n=> $rname\", p[1:])\n";
+	print $out "${indent}p[0] = p[1:]\n";
 	print $out "\n";
 }
 
