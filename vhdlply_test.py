@@ -44,7 +44,14 @@ def print_test(i, input):
         print(f"{i:<3}: {line}")
         
 
-
+def print_tree(data, indent=0):
+    if isinstance(data, list):
+        for item in data:
+            print_tree(item, indent + 2)
+    else:
+        print(' ' * indent + str(data))
+        
+        
 # Function to process each test case
 def process_test_case(i, data):
     print_test(i, data)
@@ -54,9 +61,10 @@ def process_test_case(i, data):
     lexer.lineno = 1
     lexer.input('')
     result = parser.parse(data,lexer=lexer,tracking=True)
-    print("Result:", result)
+    print("\nResult:", result)
     print("\n" + "="*80 + "\n")
-
+    print_tree(result)
+    
 # Function to test the parser
 def test_parser(test_cases):
     process_test_case(1, test_cases[0])

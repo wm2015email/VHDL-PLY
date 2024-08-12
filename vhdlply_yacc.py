@@ -684,7 +684,7 @@ def p_entity_declaration(p):
     print("\n=> entity_declaration", p[1:])
     print("\n===> entity =>", p[2][0], "file:", p.lexer.file, " lineno:", p.lineno(1))
     #colpos = get_colpos(data, p[1])
-    p[0] = p[1]
+    p[0] = p[1:]
 
 
 def p_entity_declarative_item(p):
