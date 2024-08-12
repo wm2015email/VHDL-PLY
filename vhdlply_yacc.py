@@ -668,15 +668,24 @@ def p_entity_class_entry_list(p):
     '''
     print("\n=> entity_class_entry_list", p[1:])
     p[0] = p[1:]
+    
+def set_data(d1):
+    global data
+    data = d1
 
 def p_entity_declaration(p):
     '''
     entity_declaration : ENTITY identifier IS entity_header entity_declarative_part warp28_a1mark END ENTITY_a1mark identifier_a1mark SEMI
     '''
+        
+    #for field, value in vars(p).items():
+    #    print(f">!> {field}: {value}")
+    
     print("\n=> entity_declaration", p[1:])
-    print("\n===> entity =>", p[2][0], "lineno: ", p.lineno(2), " lexpos:", p.lexpos(2))
-    p[0] = p[1:]
-    exit(1)
+    print("\n===> entity =>", p[2][0], "file:", p.lexer.file, " lineno:", p.lineno(1))
+    #colpos = get_colpos(data, p[1])
+    p[0] = p[1]
+
 
 def p_entity_declarative_item(p):
     '''
@@ -3376,5 +3385,4 @@ logging.basicConfig(
 # Build the parser
 #parser = yacc.yacc(debug=True, errorlog=log)
 parser = yacc.yacc()
-
 

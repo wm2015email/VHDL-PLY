@@ -80,6 +80,10 @@ def get_colpos(input, token):
     return (token.lexpos - line_start) + 1
     
 
+def get_rowpos(input, token):
+    line_start = input.rfind('\n', 0, token.lexpos) + 1
+    return line_start + 1
+
 # Order of Token matching is as follows:
 #   1. Def's in order they are defined
 #   2. after all def's are matched then string rules are matched
@@ -95,6 +99,8 @@ def t_KEYWORD(t):
     r'(?i)ABS|ACCESS|ACROSS|AFTER|ALIAS|ALL|AND|ARCHITECTURE|ARRAY|ASSERT|ATTRIBUTE|BEGIN|BLOCK|BODY|BREAK|BUFFER|BUS|CASE|COMPONENT|CONFIGURATION|CONSTANT|DISCONNECT|DOWNTO|END|ENTITY|ELSE|ELSIF|EXIT|FILE|FOR|FUNCTION|GENERATE|GENERIC|GROUP|GUARDED|IF|IMPURE|INERTIAL|INOUT|IN|IS|LABEL|LIBRARY|LIMIT|LINKAGE|LITERAL|LOOP|MAP|MOD|NAND|NATURE|NEW|NEXT|NOISE|NOR|NOT|NULL_|OF|ON|OPEN|OR|OTHERS|OUT|PACKAGE|PORT|POSTPONED|PROCESS|PROCEDURE|PROCEDURAL|PURE|QUANTITY|RANGE|REVERSE_RANGE|REJECT|REM|RECORD|REFERENCE|REGISTER|REPORT|RETURN|ROL|ROR|SELECT|SEVERITY|SHARED|SIGNAL|SLA|SLL|SPECTRUM|SRA|SRL|SUBNATURE|SUBTYPE|TERMINAL|THEN|THROUGH|TOLERANCE|TO|TRANSPORT|TYPE|UNAFFECTED|UNITS|UNTIL|USE|VARIABLE|WAIT|WITH|WHEN|WHILE|XNOR|XOR'
     # This reassigns type from KEYWORD to the Matched value. 
     t.type = t.value.upper()
+    t.lineno = t.lexer.lineno
+    t.lexpos = t.lexer.lexpos
     return t
 
 # Define the regular expressions for the tokens
@@ -225,8 +231,12 @@ t_ignore = ' \t\r'
 
 # Define an error rule
 def t_error(t):
-    print(f"Illegal character '{t.value[0]}'")
+    # Note: lexer error shouldn't happen...
+    colpos = get_colpos(t.Lexer.lexdata, t)
     t.lexer.skip(1)
+    print(f"LEXER ERROR: lineno:{t.lineno:<4} colpos:{colpos:<4} value:{t.value}")
+    #print(f"Illegal lexer character '{t.value[0]}'")
+
 
 # Build the lexer
 lexer = lex.lex()

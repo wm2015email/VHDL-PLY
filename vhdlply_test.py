@@ -36,12 +36,24 @@ test_cases = [
     '''
 ]
 
+def print_test(i, input):
+    print(f"\n=> Test Case {i}:")
+    
+    lines = input.splitlines()
+    for i, line in enumerate(lines, start=1):
+        print(f"{i:<3}: {line}")
+        
+
+
 # Function to process each test case
 def process_test_case(i, data):
-    print(f"\n=> Test Case {i}:")
-    print(data)
+    print_test(i, data)
     print(f"\n-> parse") 
-    result = parser.parse(data,tracking=True)
+    # Reset Lexer State between files
+    lexer.file   = f"noname{i}.vhdl"
+    lexer.lineno = 1
+    lexer.input('')
+    result = parser.parse(data,lexer=lexer,tracking=True)
     print("Result:", result)
     print("\n" + "="*80 + "\n")
 
