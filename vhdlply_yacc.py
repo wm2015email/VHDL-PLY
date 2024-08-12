@@ -1023,7 +1023,7 @@ def p_parameter_specification(p):
 
 def p_physical_literal(p):
     '''
-    physical_literal : abstract_literal identifier
+    physical_literal : abstract_literal  identifier 
     '''
 
 def p_physical_type_definition(p):
@@ -1574,7 +1574,6 @@ def p_warp0_a1mark(p):
 def p_warp1_a1star(p):
     '''
     warp1_a1star : COMMA element_association warp1_a1star
-        | COMMA element_association
         | empty
     '''
 
@@ -1611,7 +1610,6 @@ def p_identifier_a1mark(p):
 def p_block_declarative_item_a1star(p):
     '''
     block_declarative_item_a1star : block_declarative_item block_declarative_item_a1star
-        | block_declarative_item
         | empty
     '''
 
@@ -1630,7 +1628,6 @@ def p_POSTPONED_a1mark(p):
 def p_architecture_statement_a1star(p):
     '''
     architecture_statement_a1star : architecture_statement architecture_statement_a1star
-        | architecture_statement
         | empty
     '''
 
@@ -1655,7 +1652,6 @@ def p_warp6_a1mark(p):
 def p_warp7_a1star(p):
     '''
     warp7_a1star : COMMA association_element warp7_a1star
-        | COMMA association_element
         | empty
     '''
 
@@ -1680,14 +1676,12 @@ def p_port_map_aspect_a1mark(p):
 def p_use_clause_a1star(p):
     '''
     use_clause_a1star : use_clause use_clause_a1star
-        | use_clause
         | empty
     '''
 
 def p_configuration_item_a1star(p):
     '''
     configuration_item_a1star : configuration_item configuration_item_a1star
-        | configuration_item
         | empty
     '''
 
@@ -1754,7 +1748,6 @@ def p_break_selector_clause_a1mark(p):
 def p_warp15_a1star(p):
     '''
     warp15_a1star : COMMA break_element warp15_a1star
-        | COMMA break_element
         | empty
     '''
 
@@ -1779,7 +1772,6 @@ def p_case_statement_alternative_a1plus(p):
 def p_warp17_a1star(p):
     '''
     warp17_a1star : BAR choice warp17_a1star
-        | BAR choice
         | empty
     '''
 
@@ -1846,7 +1838,6 @@ def p_CONFIGURATION_a1mark(p):
 def p_configuration_declarative_item_a1star(p):
     '''
     configuration_declarative_item_a1star : configuration_declarative_item configuration_declarative_item_a1star
-        | configuration_declarative_item
         | empty
     '''
 
@@ -1859,7 +1850,6 @@ def p_warp23_a1mark(p):
 def p_context_item_a1star(p):
     '''
     context_item_a1star : context_item context_item_a1star
-        | context_item
         | empty
     '''
 
@@ -1872,7 +1862,6 @@ def p_warp24_a1mark(p):
 def p_design_unit_a1star(p):
     '''
     design_unit_a1star : design_unit design_unit_a1star
-        | design_unit
         | empty
     '''
 
@@ -1897,7 +1886,6 @@ def p_BOX_a1mark(p):
 def p_warp27_a1star(p):
     '''
     warp27_a1star : COMMA entity_class_entry warp27_a1star
-        | COMMA entity_class_entry
         | empty
     '''
 
@@ -1916,28 +1904,24 @@ def p_ENTITY_a1mark(p):
 def p_entity_declarative_item_a1star(p):
     '''
     entity_declarative_item_a1star : entity_declarative_item entity_declarative_item_a1star
-        | entity_declarative_item
         | empty
     '''
 
 def p_warp29_a1star(p):
     '''
     warp29_a1star : COMMA entity_designator warp29_a1star
-        | COMMA entity_designator
         | empty
     '''
 
 def p_entity_statement_a1star(p):
     '''
     entity_statement_a1star : entity_statement entity_statement_a1star
-        | entity_statement
         | empty
     '''
 
 def p_warp30_a1star(p):
     '''
     warp30_a1star : COMMA enumeration_literal warp30_a1star
-        | COMMA enumeration_literal
         | empty
     '''
 
@@ -1950,7 +1934,6 @@ def p_warp31_a1mark(p):
 def p_warp32_a1star(p):
     '''
     warp32_a1star : logical_operator relation warp32_a1star
-        | logical_operator relation
         | empty
     '''
 
@@ -1987,28 +1970,24 @@ def p_warp36_a1mark(p):
 def p_warp37_a1star(p):
     '''
     warp37_a1star : SEMI interface_constant_declaration warp37_a1star
-        | SEMI interface_constant_declaration
         | empty
     '''
 
 def p_warp38_a1star(p):
     '''
     warp38_a1star : COMMA group_constituent warp38_a1star
-        | COMMA group_constituent
         | empty
     '''
 
 def p_warp39_a1star(p):
     '''
     warp39_a1star : COMMA identifier warp39_a1star
-        | COMMA identifier
         | empty
     '''
 
 def p_warp40_a1star(p):
     '''
     warp40_a1star : ELSIF condition THEN sequence_of_statements warp40_a1star
-        | ELSIF condition THEN sequence_of_statements
         | empty
     '''
 
@@ -2021,7 +2000,6 @@ def p_warp41_a1mark(p):
 def p_warp42_a1star(p):
     '''
     warp42_a1star : COMMA discrete_range warp42_a1star
-        | COMMA discrete_range
         | empty
     '''
 
@@ -2040,7 +2018,6 @@ def p_warp43_a1mark(p):
 def p_warp44_a1star(p):
     '''
     warp44_a1star : COMMA identifier warp44_a1star
-        | COMMA identifier
         | empty
     '''
 
@@ -2065,21 +2042,18 @@ def p_warp45_a1mark(p):
 def p_warp46_a1star(p):
     '''
     warp46_a1star : SEMI interface_signal_declaration warp46_a1star
-        | SEMI interface_signal_declaration
         | empty
     '''
 
 def p_warp47_a1star(p):
     '''
     warp47_a1star : SEMI interface_port_declaration warp47_a1star
-        | SEMI interface_port_declaration
         | empty
     '''
 
 def p_warp48_a1star(p):
     '''
     warp48_a1star : SEMI interface_element warp48_a1star
-        | SEMI interface_element
         | empty
     '''
 
@@ -2134,7 +2108,6 @@ def p_warp53_a1mark(p):
 def p_warp54_a1star(p):
     '''
     warp54_a1star : COMMA logical_name warp54_a1star
-        | COMMA logical_name
         | empty
     '''
 
@@ -2147,7 +2120,6 @@ def p_iteration_scheme_a1mark(p):
 def p_name_part_a1star(p):
     '''
     name_part_a1star : name_part name_part_a1star
-        | name_part
         | empty
     '''
 
@@ -2160,7 +2132,6 @@ def p_warp55_a1branch(p):
 def p_warp56_a1star(p):
     '''
     warp56_a1star : DOT suffix warp56_a1star
-        | DOT suffix
         | empty
     '''
 
@@ -2203,7 +2174,6 @@ def p_warp60_a1mark(p):
 def p_package_body_declarative_item_a1star(p):
     '''
     package_body_declarative_item_a1star : package_body_declarative_item package_body_declarative_item_a1star
-        | package_body_declarative_item
         | empty
     '''
 
@@ -2216,28 +2186,24 @@ def p_PACKAGE_a1mark(p):
 def p_package_declarative_item_a1star(p):
     '''
     package_declarative_item_a1star : package_declarative_item package_declarative_item_a1star
-        | package_declarative_item
         | empty
     '''
 
 def p_secondary_unit_declaration_a1star(p):
     '''
     secondary_unit_declaration_a1star : secondary_unit_declaration secondary_unit_declaration_a1star
-        | secondary_unit_declaration
         | empty
     '''
 
 def p_procedural_declarative_item_a1star(p):
     '''
     procedural_declarative_item_a1star : procedural_declarative_item procedural_declarative_item_a1star
-        | procedural_declarative_item
         | empty
     '''
 
 def p_sequential_statement_a1star(p):
     '''
     sequential_statement_a1star : sequential_statement sequential_statement_a1star
-        | sequential_statement
         | empty
     '''
 
@@ -2250,7 +2216,6 @@ def p_warp61_a1mark(p):
 def p_process_declarative_item_a1star(p):
     '''
     process_declarative_item_a1star : process_declarative_item process_declarative_item_a1star
-        | process_declarative_item
         | empty
     '''
 
@@ -2269,7 +2234,6 @@ def p_warp63_a1branch(p):
 def p_warp64_a1star(p):
     '''
     warp64_a1star : COMMA name warp64_a1star
-        | COMMA name
         | empty
     '''
 
@@ -2312,14 +2276,12 @@ def p_expression_a1mark(p):
 def p_warp68_a1star(p):
     '''
     warp68_a1star : COMMA waveform WHEN choices warp68_a1star
-        | COMMA waveform WHEN choices
         | empty
     '''
 
 def p_warp69_a1star(p):
     '''
     warp69_a1star : COMMA name warp69_a1star
-        | COMMA name
         | empty
     '''
 
@@ -2344,14 +2306,12 @@ def p_warp71_a1mark(p):
 def p_warp72_a1star(p):
     '''
     warp72_a1star : COMMA name warp72_a1star
-        | COMMA name
         | empty
     '''
 
 def p_warp73_a1star(p):
     '''
     warp73_a1star : COMMA name warp73_a1star
-        | COMMA name
         | empty
     '''
 
@@ -2376,7 +2336,6 @@ def p_warp76_a1mark(p):
 def p_warp77_a1star(p):
     '''
     warp77_a1star : adding_operator term warp77_a1star
-        | adding_operator term
         | empty
     '''
 
@@ -2389,7 +2348,6 @@ def p_simultaneous_alternative_a1plus(p):
 def p_warp78_a1star(p):
     '''
     warp78_a1star : ELSIF condition USE simultaneous_statement_part warp78_a1star
-        | ELSIF condition USE simultaneous_statement_part
         | empty
     '''
 
@@ -2402,7 +2360,6 @@ def p_warp79_a1mark(p):
 def p_simultaneous_statement_a1star(p):
     '''
     simultaneous_statement_a1star : simultaneous_statement simultaneous_statement_a1star
-        | simultaneous_statement
         | empty
     '''
 
@@ -2433,7 +2390,6 @@ def p_designator_a1mark(p):
 def p_subprogram_declarative_item_a1star(p):
     '''
     subprogram_declarative_item_a1star : subprogram_declarative_item subprogram_declarative_item_a1star
-        | subprogram_declarative_item
         | empty
     '''
 
@@ -2470,7 +2426,6 @@ def p_constraint_a1mark(p):
 def p_warp84_a1star(p):
     '''
     warp84_a1star : multiplying_operator factor warp84_a1star
-        | multiplying_operator factor
         | empty
     '''
 
@@ -2495,21 +2450,18 @@ def p_warp87_a1mark(p):
 def p_warp88_a1star(p):
     '''
     warp88_a1star : COMMA index_subtype_definition warp88_a1star
-        | COMMA index_subtype_definition
         | empty
     '''
 
 def p_warp89_a1star(p):
     '''
     warp89_a1star : COMMA index_subtype_definition warp89_a1star
-        | COMMA index_subtype_definition
         | empty
     '''
 
 def p_warp90_a1star(p):
     '''
     warp90_a1star : COMMA selected_name warp90_a1star
-        | COMMA selected_name
         | empty
     '''
 
@@ -2540,7 +2492,6 @@ def p_timeout_clause_a1mark(p):
 def p_warp92_a1star(p):
     '''
     warp92_a1star : COMMA waveform_element warp92_a1star
-        | COMMA waveform_element
         | empty
     '''
 
@@ -2570,7 +2521,9 @@ def p_warp96_a1branch(p):
 
 # Define the empty rule to handle the zero occurrences case
 def p_empty(p):
-    'empty :'
+    '''
+    empty : 
+    '''
     pass
 
 # Error rule for syntax errors

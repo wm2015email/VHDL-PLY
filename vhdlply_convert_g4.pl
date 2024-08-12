@@ -50,6 +50,9 @@ while (my $line = <$in>) {
 	
     # REMOVE EOF TOKEN
     $line =~ s/\s*\bEOF\b\s*//g;
+
+    # hacky fix
+    $line =~ s/\(: identifier\)\s*$/ identifier /g;	
 	
 	# Remove non-capture groups?!??  (: ... ) =>  ( )
 	$line =~ s/\(\:/(/g;
@@ -148,12 +151,26 @@ for my $rule_curr (@rule_list) {
 			if (!defined($warpdone{$wname})) {
 			    $warpdone{$wname} = 1;
 		        $new_rule  = "$wname : $wexpr $wname\n";
-		        $new_rule .= "| $wexpr\n";
 		        $new_rule .= "| empty\n";	
                 push(@rule_list, $new_rule);
                 #print "newrule: $new_rule\n";
 		    }				
 		}
+		elsif ($wtype eq '+') {
+		    $wname          = "${warp}_a1plus";
+
+		    $rule_curr      =~ s/$junker/$wname/; 
+			
+			$wexpr = "($wexpr)" if ($wexpr =~ /\|/);
+		    
+			if (!defined($warpdone{$wname})) {
+			    $warpdone{$wname} = 1;
+			    $new_rule  = "$wname : $wexpr $wname\n";
+		        $new_rule .= "| $wexpr\n";
+                push(@rule_list, $new_rule);	
+                #print "newrule: $new_rule\n";				
+			}
+		}		
 		elsif ($wtype eq '?') {
 		    $wname          = "${warp}_a1mark";
 			
@@ -169,21 +186,6 @@ for my $rule_curr (@rule_list) {
                 #print "newrule: $new_rule\n";
 			}					
 	    }
-		elsif ($wtype eq '+') {
-		    $wname          = "${warp}_a1plus";
-
-		    $rule_curr      =~ s/$junker/$wname/; 
-			
-			$wexpr = "($wexpr)" if ($wexpr =~ /\|/);
-		    
-			if (!defined($warpdone{$wname})) {
-			    $warpdone{$wname} = 1;
-			    $new_rule  = "$wname : $wexpr $wname\n";
-		        $new_rule .= "| $wexpr\n";
-                push(@rule_list, $new_rule);	
-                #print "newrule: $new_rule\n";				
-			}
-		}
 
 	} # End Tranform1
 
@@ -237,7 +239,9 @@ for my $rule_curr (@rule_list) {
 my @out = (
   "# Define the empty rule to handle the zero occurrences case",
   "def p_empty(p):",
-  "    'empty :'",
+  "    '''",
+  "    empty : ",
+  "    '''",
   "    pass",
   "",
   "# Error rule for syntax errors",
