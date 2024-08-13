@@ -47,7 +47,7 @@ def process_test_case(file_path):
     global log
     data = get_file(file_path);
     print_test(file_path, data)
-    print(f"\n-> parse") 
+    print(f"\n-> parse: {file_path}") 
     # Reset Lexer State between files
     lexer.file   = file_path
     lexer.lineno = 1
