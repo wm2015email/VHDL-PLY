@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 ######################################################
 # Attempting to make a VHDL lexer using Python PLY
 # GNU License

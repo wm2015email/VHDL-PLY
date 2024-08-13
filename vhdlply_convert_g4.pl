@@ -19,13 +19,23 @@ open(my $out, '>', $output_file) or die "Could not open file '$output_file' $!";
 print "reading: $input_file\n";
 print "reading: $output_file\n";
 
+print $out "#!/usr/bin/python3\n";
+print $out "\n";
 print $out "# PLY Yacc script generated from vhdl.g4\n";
 print $out "import ply.yacc as yacc\n";
 print $out "from vhdlply_lexer import tokens\n\n";  # Assuming a separate vhdl_lex.py file for tokens
 print $out "\n";
 print $out "start =  'design_file'\n";
 print $out "\n";
+print $out "yacc_debug_file = 'parsedebug.txt'\n";
+print $out "\n";
+print $out "debug_def  = False\n";
+print $out "debug_yacc = True\n";
+print $out "\n";
 
+#-----------------------------------------------------
+# Load G4 File
+#-----------------------------------------------------
 my $inum      = 0;
 my $indent    = "";
 my @rule_list = ();
@@ -97,6 +107,9 @@ while (my $line = <$in>) {
     }
 }
 
+#-----------------------------------------------------
+# Convert G4 to PLY Yacc
+#-----------------------------------------------------
 my $new_rule    = "";
 my %warpdone    = ();
 my $junker      = "";
@@ -118,8 +131,6 @@ for my $rule_curr (@rule_list) {
 	$rname      = $rpart[0];	
 	$wname      = "";
 
-		
-	
 	#-------------------------------------
 	# Transform1
 	#-------------------------------------
@@ -232,10 +243,11 @@ for my $rule_curr (@rule_list) {
 	} 
 	$inum   = 4*1; $indent = " " x $inum;
 	print $out "${indent}'''\n";
-	print $out "${indent}print(\"\\n=> $rname\", p[1:])\n";
+	print $out "${indent}if debug_def: print(\"\\n=> $rname\", p[1:])\n";
 	print $out "${indent}p[0] = p[1:]\n";
 	print $out "\n";
 }
+
 
 my @out = (
   "# Define the empty rule to handle the zero occurrences case",
@@ -247,7 +259,8 @@ my @out = (
   "",
   "# Error rule for syntax errors",
   "def p_error(p):",
-  "    print(\"Syntax error in input!\")",
+  "    print(f\"PARSE ERROR: value:{p.value} lineno:{p.lineno} pos:{p.lexpos} type:{p.type}\\n\")",
+  "    exit(-1);",
   "",
   "import logging",
   "log = logging.getLogger('ply')",
@@ -259,10 +272,14 @@ my @out = (
   ")",
   "",
   "# Build the parser",
-  "#parser = yacc.yacc(debug=True, errorlog=log)",
-  "parser = yacc.yacc()",
+  "if debug_yacc:",
+  "    print(f\"creating yacc debug file: {yacc_debug_file}\")",
+  "    parser = yacc.yacc(debug=True, errorlog=log)",
+  "else:",
+  "    parser = yacc.yacc()",
   ""
 );
+
 
 
 for my $line (@out) {

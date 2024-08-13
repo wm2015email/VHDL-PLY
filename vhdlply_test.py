@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 ######################################################
 # Testing VHDL paser using Python PLY
 # GNU License
@@ -9,6 +11,9 @@ from vhdlply_lexer import lexer
 from vhdlply_yacc  import parser
 
 # Test cases
+
+debug_printtree   = False
+debug_printresult = False
 
 
 def print_test(i, input):
@@ -48,11 +53,12 @@ def process_test_case(file_path):
     lexer.lineno = 1
     lexer.input('')
     result = parser.parse(data,lexer=lexer,tracking=True,debug=log)
-    print("\nResult:", result)
-    print("\n" + "="*80 + "\n")
-    print_tree(result)
     
-    
+    if debug_printresult:
+        print("\nResult:", result)
+        print("\n" + "="*80 + "\n")
+        
+    if debug_printtree: print_tree(result)    
 
 # Run the tests
 print("START")
@@ -72,5 +78,5 @@ log = logging.getLogger()
 #process_test_case("test_003.vhd")
 process_test_case("test_005.vhd")
 
-print("END")
+print("\n-> finished\n")
 
