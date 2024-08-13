@@ -112,10 +112,11 @@ def p_architecture_body(p):
     if debug_def: print("\n=> architecture_body", p[1:])
     p[0] = p[1:]
     
-    type = "arch"
-    name = p[2][0]
+    type   = "arch"
+    name   = p[2][0]
+    entity = p[4][0]
     loc  = f"{p.lexer.file}:{p.lineno(1)}:"
-    print(f"\n===> {loc:<20} {type:<10} {name:<10} ")
+    print(f"===> {loc:<20} {type:<10} {entity:<10} of:{name:<10} ")
     
 
 def p_architecture_declarative_part(p):
@@ -692,7 +693,7 @@ def p_entity_declaration(p):
     type = "entity"
     name = p[2][0]
     loc  = f"{p.lexer.file}:{p.lineno(1)}:"
-    print(f"\n===> {loc:<20} {type:<10} {name:<10} ")
+    print(f"===> {loc:<20} {type:<10} {name:<10} ")
 
 
 def p_entity_declarative_item(p):
