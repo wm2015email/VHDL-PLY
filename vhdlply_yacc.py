@@ -3,7 +3,8 @@ import ply.yacc as yacc
 from vhdlply_lexer import tokens
 
 
-start =  'design_file'
+start = 'design_file'
+#start = 'port_clause'
 
 def p_abstract_literal(p):
     '''
@@ -3375,14 +3376,7 @@ def p_error(p):
     
     exit(-1);
 
-import logging
-log = logging.getLogger('ply')
-logging.basicConfig(
-    level = logging.DEBUG,
-    filename = "parselog.txt",
-    filemode = "w",
-    format = "%(filename)10s:%(lineno)4d:%(message)s"
-)
+
 
 # Build the parser
 #parser = yacc.yacc(debug=True, errorlog=log)

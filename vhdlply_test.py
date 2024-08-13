@@ -9,32 +9,7 @@ from vhdlply_lexer import lexer
 from vhdlply_yacc  import parser
 
 # Test cases
-test_cases = [
-    '''
-    Library ieee;
-    USE ieee.std_logic_vector.all;
-    
-    ENTITY MyEntity is
-        port(
-            clk : in std_logic;
-            rst : in std_logic
-        );
-    end MyEntity;
-    ''',
-    '''
-    entity AnotherEntity is
-        port(
-            a : in std_logic;
-            b : out std_logic;
-            c : inout std_logic
-        );
-    end AnotherEntity;
-    ''',
-    '''
-    entity EmptyEntity is
-    end EmptyEntity;
-    '''
-]
+
 
 def print_test(i, input):
     print(f"\n=> Test Case {i}:")
@@ -64,6 +39,7 @@ def get_file(file_path):
             
 # Function to process each test case
 def process_test_case(file_path):
+    global log
     data = get_file(file_path);
     print_test(file_path, data)
     print(f"\n-> parse") 
@@ -71,20 +47,30 @@ def process_test_case(file_path):
     lexer.file   = file_path
     lexer.lineno = 1
     lexer.input('')
-    result = parser.parse(data,lexer=lexer,tracking=True)
+    result = parser.parse(data,lexer=lexer,tracking=True,debug=log)
     print("\nResult:", result)
     print("\n" + "="*80 + "\n")
     print_tree(result)
     
-# Function to test the parser
-def test_parser(test_cases):
-    process_test_case("test_001.vhd")
-    #process_test_case("test_002.vhd")
-    #process_test_case("test_003.vhd")
     
 
 # Run the tests
 print("START")
-test_parser(test_cases)
+
+import logging
+logging.basicConfig(
+    level = logging.DEBUG,
+    filename = "parselog.txt",
+    filemode = "w",
+    format = "%(filename)10s:%(lineno)4d:%(message)s"
+)
+log = logging.getLogger()
+
+
+#process_test_case("test_001.vhd")
+#process_test_case("test_002.vhd")
+#process_test_case("test_003.vhd")
+process_test_case("test_005.vhd")
+
 print("END")
 

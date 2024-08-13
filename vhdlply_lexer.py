@@ -101,7 +101,8 @@ def t_COMMENT(t):
 def t_newline(t):
     r'\n+'
     t.lexer.lineno += len(t.value)
-
+    pass
+    
 def t_CHARACTER_LITERAL(t):
     r"'.'"
     return t
@@ -128,6 +129,10 @@ def t_whitespace(t):
 # Define the regular expressions for the tokens
 def t_BASE_LITERAL(t):
     r'(\d+)[#](\w+)(\.\w+)?[#]([eE][+\-]?\d+)?'
+    return t
+
+def t_INTEGER(t):
+    r'\d+(_?\d+)*'
     return t
 
 def t_BIT_STRING_LITERAL_BINARY(t):
@@ -159,9 +164,6 @@ def t_EXPONENT(t):
 #    r'[A-F]'
 #    return t
 
-#def t_INTEGER(t):
-#    r'\d+(_?\d+)*'
-#    return t
 
 #def t_DIGIT(t):
 #    r'\d'
@@ -213,7 +215,7 @@ def t_BASIC_IDENTIFIER(t):
 #t_STRING_LITERAL            = r'"([^"\n\r]|"")*"'
 #t_EXPONENT                  = r'[eE][+\-]?\d+'
 t_HEXDIGIT                  = r'[A-F]'
-t_INTEGER                   = r'\d+(_?\d+)*'
+#t_INTEGER                   = r'\d+(_?\d+)*'
 t_DIGIT                     = r'\d'
 t_BASED_INTEGER             = r'[0-9A-Z](_?[0-9A-Z])*'
 t_EXTENDED_DIGIT            = r'[0-9A-Z]'
