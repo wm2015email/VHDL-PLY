@@ -278,8 +278,6 @@ t_OTHER_SPECIAL_CHARACTER = r'[!$%@?^`{}~ \u00A4\u00A6\u00A7\u00A9\u00AB\u00AC\u
 # Ignored characters
 #t_ignore = ' \t\r'
 
-
-
 # Define an error rule
 def t_error(t):
     # Note: lexer error shouldn't happen...
@@ -292,43 +290,43 @@ def t_error(t):
 # Build the lexer
 lexer = lex.lex()
 
-# Test it out
-data = '''
--- This is a comment
-A123 32#3A.B3#E-4
-B"1010_1011"
-O"12_3456"
-X"AB_CD_EF"
-42.0E+3
-BASIC_IDENTIFIER
-\\Extended_Identifier\\
 
--- This is a comment
-abs ACCESS AcRoSs After alias All and Architecture
-array ASSERT ATTRIBUTE BEGIN BLOCK BODY BREAK BUFFER
-bus case component CONFIGURATION CONSTANT DISCONNECT
-downto END entity ELSE elsif EXIT file FOR function
-generate GENERIC group GUARDED if impure IN inertial
-inout is LABEL library LIMIT linkage literal loop MAP
-MOD nand NATURE new NEXT noise NOR not NULL_ of on OPEN
-or OTHERS out PACKAGE port POSTPONED process PROCEDURE
-PROCEDURAL pure QUANTITY range REVERSE_RANGE reject REM
-record REFERENCE register REPORT return ROL ROR select
-SEVERITY shared SIGNAL SLA SLL spectrum SRA SRL subnature
-subtype TERMINAL then THROUGH to TOLERANCE TRANSPORT type
-UNAFFECTED units UNTIL use VARIABLE wait WITH when WHILE
-xnor XOR
-'''
+def lexer_test1():
+    # Test it out
+    data = '''
+    -- This is a comment
+    A123 32#3A.B3#E-4
+    B"1010_1011"
+    O"12_3456"
+    X"AB_CD_EF"
+    42.0E+3
+    BASIC_IDENTIFIER
+    \\Extended_Identifier\\
 
-# Give the lexer some input
-lexer.input(data)
+    -- This is a comment
+    abs ACCESS AcRoSs After alias All and Architecture
+    array ASSERT ATTRIBUTE BEGIN BLOCK BODY BREAK BUFFER
+    bus case component CONFIGURATION CONSTANT DISCONNECT
+    downto END entity ELSE elsif EXIT file FOR function
+    generate GENERIC group GUARDED if impure IN inertial
+    inout is LABEL library LIMIT linkage literal loop MAP
+    MOD nand NATURE new NEXT noise NOR not NULL_ of on OPEN
+    or OTHERS out PACKAGE port POSTPONED process PROCEDURE
+    PROCEDURAL pure QUANTITY range REVERSE_RANGE reject REM
+    record REFERENCE register REPORT return ROL ROR select
+    SEVERITY shared SIGNAL SLA SLL spectrum SRA SRL subnature
+    subtype TERMINAL then THROUGH to TOLERANCE TRANSPORT type
+    UNAFFECTED units UNTIL use VARIABLE wait WITH when WHILE
+    xnor XOR
+    '''
 
-
-# Tokenize
-while True:
-    tok = lexer.token()
-    if not tok:
-        break  # No more input
-    colpos = get_colpos(data, tok)
-    print(f"TOKEN: lineno:{tok.lineno:<4} colpos:{colpos:<4} type:{tok.type:<30} value:{tok.value}")
+    # Give the lexer some input
+    lexer.input(data)
+    
+    while True:
+        tok = lexer.token()
+        if not tok:
+            break  # No more input
+        colpos = get_colpos(data, tok)
+        print(f"TOKEN: lineno:{tok.lineno:<4} colpos:{colpos:<4} type:{tok.type:<30} value:{tok.value}")
     

@@ -7,13 +7,19 @@
 # 8/8/2024
 ######################################################
 
-from vhdlply_lexer import lexer
-from vhdlply_yacc  import parser
+import vhdlply_yacc
+import vhdlply_lexer
 
-# Test cases
+debug_lex              = False
+vhdlply_yacc.start     = 'design_file'
+vhdlply_yacc.debug_def = False
+debug_printtree        = False
+debug_printresult      = False
+debug_file             = False
 
-debug_printtree   = False
-debug_printresult = False
+if debug_lex:
+    vhdlply_lex.lexer_test1()
+    exit(1);
 
 
 def print_test(i, input):
@@ -45,23 +51,22 @@ def get_file(file_path):
 # Function to process each test case
 def process_test_case(file_path):
     global log
+    global debug_def
+    debug_def         = True
     data = get_file(file_path);
-    print_test(file_path, data)
+    if debug_file: print_test(file_path, data)
     print(f"\n-> parse: {file_path}\n") 
     # Reset Lexer State between files
-    lexer.file   = file_path
-    lexer.lineno = 1
-    lexer.input('')
-    result = parser.parse(data,lexer=lexer,tracking=True,debug=log)
+    vhdlply_lexer.lexer.file   = file_path
+    vhdlply_lexer.lexer.lineno = 1
+    vhdlply_lexer.lexer.input('')
+    result = vhdlply_yacc.parser.parse(data,lexer=vhdlply_lexer.lexer,tracking=True,debug=log)
     
     if debug_printresult:
         print("\nResult:", result)
         print("\n" + "="*80 + "\n")
         
     if debug_printtree: print_tree(result)    
-
-# Run the tests
-print("START")
 
 import logging
 logging.basicConfig(
