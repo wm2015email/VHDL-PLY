@@ -1,0 +1,1357 @@
+#-----------------------------------------------------
+# IEEE Standard VHDL 
+# Language REFERENCE Manual
+# Appendix A
+# http://edg.uchicago.edu/~tang/VHDLref.pdf
+#
+# IEEE Std 1076, 2000 Edition
+# (Incorporates IEEE Std 1076-1993
+#  AND IEEE Std 1076a-2000)
+#-----------------------------------------------------
+
+#----------------------------------------------------
+# Page:1
+#----------------------------------------------------
+
+
+abstract_literal 
+    : REAL_LITERAL 
+	| BASE_LITERAL  
+	;
+
+access_type_definition 
+    : ACCESS subtype_indication
+    ;
+
+actual_designator 
+    : expression 
+	| signal__name 
+	| variable__name 
+	| file__name
+	| OPEN
+    ;
+	
+actual_parameter_part 
+    : parameter__association_list
+    ;
+
+	
+actual_part 
+    : actual_designator 
+	| function__name LPAREN actual_designator RPAREN 
+	| type_mark LPAREN actual_designator RPAREN
+    ;
+	
+adding_operator 
+    : PLUS 
+	| MINUS 
+	| AMPERSAND
+    ;
+	
+aggregate 
+    : LPAREN element_association { COMMA element_association } RPAREN
+    ;
+	
+alias_declaration 
+    : ALIAS alias_designator [ COLON subtype_indication ] IS name [ signature ] SEMI
+    ;
+	
+alias_designator 
+    : identifier 
+	| CHARACTER_LITERAL 
+	| operator_symbol
+    ;
+	
+allocator 
+    : NEW subtype_indication 
+	| NEW qualified_expression
+    ;
+	
+architecture_body 
+   : ARCHITECTURE identifier OF entity__name IS architecture_declarative_part BEGIN architecture_statement_part END [ ARCHITECTURE ] [ architecture__simple_name ] SEMI
+   ;
+
+architecture_declarative_part 
+    : { block_declarative_item }
+	;
+
+#----------------------------------------------------
+# Page:2
+#----------------------------------------------------
+
+architecture_statement_part 
+    : { concurrent_statement }
+    ;
+	
+array_type_definition 
+    : unconstrained_array_definition 
+	| constrained_array_definition
+    ;
+	
+assertion 
+    : ASSERT condition [ REPORT expression ] [ SEVERITY expression ]
+    ;
+	
+assertion_statement 
+    : [ LABEL COLON ] assertion SEMI
+    ;
+	
+association_element 
+    : [ formal_part ARROW ] actual_part
+    ;
+	
+association_list 
+    : association_element { COMMA association_element }
+    ;
+	
+attribute_declaration 
+    : ATTRIBUTE identifier COLON type_mark SEMI
+    ;
+	
+attribute_designator 
+    : attribute__simple_name
+    ;
+	
+attribute_name 
+    : prefix [ signature ] APOSTROPHE attribute_designator [ LPAREN expression RPAREN ]
+    ;
+	
+attribute_specification 
+    : ATTRIBUTE attribute_designator OF entity_specification IS expression SEMI
+    ;
+	
+#base 
+#    : integer
+#    ;
+	
+#base_specifier 
+#    : B 
+# 	 | O 
+#	 | X
+#    ;
+	
+base_unit_declaration 
+    : identifier SEMI
+    ;
+	
+#BASED_INTEGER
+#    : EXTENDED_DIGIT { [ underline ] EXTENDED_DIGIT }
+#    ;
+	 
+#BASE_LITERAL 
+#    : base # based_integer [ DOT based_integer ] # [ EXPONENT ]
+#    ;
+	
+#basic_character 
+#    : basic_graphic_character 
+#	| format_effector
+#    ;
+	
+#basic_graphic_character 
+#    : upper_case_letter 
+#	| digit 
+#	| special_character 
+#	| space_character
+#    ;
+	
+#BASIC_IDENTIFIER 
+#    : letter { [ underline ] letter_or_digit }
+#    ;
+	
+binding_indication 
+    : [ USE entity_aspect ] [ generic_map_aspect ] [ port_map_aspect ]
+    ;
+
+#----------------------------------------------------
+# Page:3 
+#----------------------------------------------------
+
+bit_string_literal
+   : BIT_STRING_LITERAL_BINARY
+   | BIT_STRING_LITERAL_OCTAL
+   | BIT_STRING_LITERAL_HEX
+   ;
+
+#bit_string_literal 
+#    : base_specifier DBLQUOTE [ bit_value ] DBLQUOTE
+#    ;
+	
+#bit_value 
+#    : EXTENDED_DIGIT { [ underline ] EXTENDED_DIGIT }
+#    ;
+	
+block_configuration 
+    : FOR block_specification { use_clause } { configuration_item } END FOR SEMI
+    ;
+	
+block_declarative_item 
+    : subprogram_declaration 
+	| subprogram_body 
+	| type_declaration 
+	| subtype_declaration 
+	| constant_declaration 
+	| signal_declaration 
+	| shared__variable_declaration 
+	| file_declaration 
+	| alias_declaration 
+	| component_declaration 
+	| attribute_declaration 
+	| attribute_specification 
+	| configuration_specification 
+	| disconnection_specification 
+	| use_clause 
+	| group_template_declaration 
+	| group_declaration
+    ;
+	
+block_declarative_part
+    : { block_declarative_item }
+    ;
+	
+block_header 
+    : [ generic_clause [ generic_map_aspect SEMI ] ] [ port_clause [ port_map_aspect SEMI ] ]
+    ;
+	
+block_specification 
+    : architecture__name 
+	| block_statement__label 
+	| generate_statement__label [ LPAREN index_specification RPAREN ]
+    ;
+	
+block_statement 
+    : block__label COLON BLOCK [ LPAREN guard__expression RPAREN ] [ IS ] block_header block_declarative_part BEGIN block_statement_part END BLOCK [ block__label ] SEMI
+    ;
+block_statement_part 
+    : { concurrent_statement }
+    ;
+
+#----------------------------------------------------
+# Page:4
+#----------------------------------------------------
+
+case_statement 
+    : [ case__label COLON ] CASE expression IS case_statement_alternative { case_statement_alternative } END CASE [ case__label ] SEMI
+    ;
+case_statement_alternative 
+    : WHEN choices ARROW sequence_of_statements
+    ;
+	
+#CHARACTER_LITERAL 
+#    : APOSTROPHE graphic_character APOSTROPHE
+#    ;
+	
+choice 
+    : simple_expression 
+	| discrete_range 
+	| element__simple_name 
+	| OTHERS
+    ;
+	
+choices 
+    : choice { | choice }
+    ;
+	
+component_configuration 
+    : FOR component_specification [ binding_indication SEMI ] [ block_configuration ] END FOR SEMI
+    ;
+	
+component_declaration 
+    : COMPONENT identifier [ IS ] [ local__generic_clause ] [ local__port_clause ] END COMPONENT [ component__simple_name ] SEMI
+    ;
+	
+component_instantiation_statement 
+    : instantiation__label COLON instantiated_unit [ generic_map_aspect ] [ port_map_aspect ] SEMI
+    ;
+	
+component_specification 
+    : instantiation_list COLON component__name
+    ;
+	
+composite_type_definition 
+    : array_type_definition 
+	| record_type_definition
+    ;
+	
+concurrent_assertion_statement 
+    : [ LABEL COLON ] [ POSTPONED ] assertion SEMI
+    ;
+	
+concurrent_procedure_call_statement 
+    : [ LABEL COLON ] [ POSTPONED ] procedure_call SEMI
+    ;
+
+#----------------------------------------------------
+# Page:5
+#----------------------------------------------------
+
+concurrent_signal_assignment_statement 
+    : [ LABEL COLON ] [ POSTPONED ] conditional_signal_assignment 
+	| [ LABEL COLON ] [ POSTPONED ] selected_signal_assignment
+    ;
+	
+concurrent_statement 
+    : block_statement 
+	| process_statement 
+	| concurrent_procedure_call_statement 
+	| concurrent_assertion_statement 
+	| concurrent_signal_assignment_statement 
+	| component_instantiation_statement 
+	| generate_statement
+    ;
+	
+condition 
+    : boolean__expression
+    ;
+	
+condition_clause 
+    : UNTIL condition
+    ;
+	
+conditional_signal_assignment 
+    : target LE options conditional_waveforms SEMI
+    ;
+	
+conditional_waveforms 
+    : { waveform WHEN condition ELSE } waveform [ WHEN condition ]
+    ;
+	
+configuration_declaration 
+    : CONFIGURATION identifier OF entity__name IS configuration_declarative_part block_configuration END [ CONFIGURATION ] [ configuration__simple_name ] SEMI
+    ;
+	
+configuration_declarative_item 
+    : use_clause 
+	| attribute_specification 
+	| group_declaration
+    ;
+
+configuration_declarative_part 
+    : { configuration_declarative_item }
+    ;
+	
+configuration_item 
+    : block_configuration 
+	| component_configuration
+    ;
+	
+configuration_specification 
+    : FOR component_specification binding_indication SEMI
+    ;
+	
+constant_declaration 
+    : CONSTANT identifier_list COLON subtype_indication [ VARASGN expression ] SEMI
+    ;
+	
+constrained_array_definition 
+    : ARRAY index_constraint OF element__subtype_indication
+    ;
+	
+constraint 
+    : range_constraint 
+	| index_constraint
+    ;
+
+#----------------------------------------------------
+# Page:6
+#----------------------------------------------------
+	
+context_clause 
+    : { context_item }
+    ;
+	
+context_item 
+    : library_clause 
+	| use_clause
+    ;
+	
+##RENAMED to REAL_LITERAL
+#decimal_literal 
+#    : integer [ DOT integer ] [ EXPONENT ]
+#    ;
+	
+#declaration 
+#   : type_declaration 
+#	| subtype_declaration 
+#	| object_declaration 
+#	| interface_declaration 
+#	| alias_declaration 
+#	| attribute_declaration 
+#	| component_declaration 
+#	| group_template_declaration 
+#	| group_declaration 
+#	| entity_declaration 
+#	| configuration_declaration 
+#	| subprogram_declaration 
+#	| package_declaration
+#   ;
+	
+delay_mechanism 
+    : TRANSPORT 
+	| [ REJECT time__expression ] INERTIAL
+    ;
+	
+design_file 
+    : design_unit { design_unit }
+    ;
+	
+design_unit 
+    : context_clause library_unit
+    ;
+	
+designator 
+    : identifier 
+	| operator_symbol
+    ;
+	
+direction 
+    : TO 
+	| DOWNTO
+    ;
+	
+disconnection_specification 
+    : DISCONNECT guarded_signal_specification AFTER time__expression SEMI
+    ;
+	
+discrete_range 
+    : discrete__subtype_indication 
+	| RANGE
+    ;
+	
+element_association 
+    : [ choices ARROW ] expression
+    ;
+	
+element_declaration 
+    : identifier_list COLON element_subtype_definition SEMI
+    ;
+	
+element_subtype_definition 
+    : subtype_indication
+    ;
+	
+entity_aspect 
+    : ENTITY entity__name [ LPAREN architecture__identifier RPAREN ] 
+	| CONFIGURATION configuration__name 
+	| OPEN
+    ;
+
+#----------------------------------------------------
+# Page:7
+#----------------------------------------------------
+	
+entity_class 
+    : ENTITY 
+	| ARCHITECTURE 
+	| CONFIGURATION 
+	| PROCEDURE 
+	| FUNCTION 
+	| PACKAGE 
+	| TYPE 
+	| SUBTYPE 
+	| CONSTANT 
+	| SIGNAL 
+	| VARIABLE 
+	| COMPONENT 
+	| LABEL 
+	| literal 
+	| UNITS
+    ;
+	
+entity_class_entry 
+    : entity_class [ BOX ]
+    ;
+	
+entity_class_entry_list 
+    : entity_class_entry { COMMA entity_class_entry }
+    ;
+	
+entity_declaration 
+    : ENTITY identifier IS entity_header entity_declarative_part [ BEGIN entity_statement_part ] END [ ENTITY ] [ entity__simple_name ] SEMI
+    ;
+	
+entity_declarative_item 
+    : subprogram_declaration 
+	| subprogram_body 
+	| type_declaration 
+	| subtype_declaration 
+	| constant_declaration 
+	| signal_declaration 
+	| shared__variable_declaration 
+	| file_declaration 
+	| alias_declaration 
+	| attribute_declaration 
+	| attribute_specification 
+	| disconnection_specification 
+	| use_clause 
+	| group_template_declaration 
+	| group_declaration
+    ;
+	
+entity_declarative_part 
+    : { entity_declarative_item }
+    ;
+	
+entity_designator 
+    : entity_tag [ signature ]
+    ;
+	
+entity_header 
+    : [ formal__generic_clause ] [ formal__port_clause ]
+    ;
+	
+entity_name_list 
+    : entity_designator { COMMA entity_designator } 
+	| OTHERS 
+	| ALL
+    ;
+	
+entity_specification 
+    : entity_name_list COLON entity_class
+    ;
+
+#----------------------------------------------------
+# Page:8
+#----------------------------------------------------
+
+entity_statement 
+    : concurrent_assertion_statement 
+	| passive__concurrent_procedure_call_statement 
+	| passive__process_statement
+    ;
+	
+entity_statement_part 
+    : { entity_statement }
+    ;
+	
+entity_tag 
+    : simple_name 
+	| CHARACTER_LITERAL 
+	| operator_symbol
+    ;
+	
+enumeration_literal 
+    : identifier 
+	| CHARACTER_LITERAL
+    ;
+	
+enumeration_type_definition 
+    : LPAREN enumeration_literal { COMMA enumeration_literal } RPAREN
+    ;
+	
+exit_statement 
+    : [ LABEL COLON ] EXIT [ loop__label ] [ WHEN condition ] SEMI
+    ;
+	
+#EXPONENT 
+#    : E [ PLUS ] integer 
+#	| E MINUS integer
+#    ;
+	
+expression 
+   : relation { AND relation } 
+   | relation { OR relation } 
+   | relation { XOR relation } 
+   | relation [ NAND relation ] 
+   | relation [ NOR relation ] 
+   | relation { XNOR relation }
+   ;
+   
+#EXTENDED_DIGIT 
+#   : digit 
+#   | letter
+#   ;
+   
+#EXTENDED_IDENTIFIER 
+#   : BACKSLASH graphic_character { graphic_character } BACKSLASH
+#   ;
+   
+factor 
+   : primary [ DOUBLESTAR primary ] 
+   | ABS primary 
+   | NOT primary
+   ;
+   
+file_declaration 
+   : FILE identifier_list COLON subtype_indication [ file_open_information ] SEMI
+   ;
+   
+file_logical_name 
+   : string__expression
+   ;
+   
+file_open_information 
+   : [ OPEN file_open_kind__expression ] IS file_logical_name
+   ;
+   
+file_type_definition 
+   : FILE OF type_mark
+   ;
+   
+floating_type_definition 
+   : range_constraint
+   ;
+   
+formal_designator 
+   : generic__name 
+   | port__name 
+   | parameter__name
+   ;
+
+#----------------------------------------------------
+# Page:9
+#----------------------------------------------------
+   
+formal_parameter_list 
+   : parameter__interface_list
+   ;
+   
+formal_part 
+   : formal_designator 
+   | function__name LPAREN formal_designator RPAREN 
+   | type_mark LPAREN formal_designator RPAREN
+   ;
+   
+full_type_declaration 
+   : TYPE identifier IS type_definition SEMI
+   ;
+   
+function_call 
+   : function__name [ LPAREN actual_parameter_part RPAREN ]
+   ;
+   
+generate_statement 
+   : generate__label COLON generation_scheme GENERATE [ { block_declarative_item } BEGIN ] { concurrent_statement } END GENERATE [ generate__label ] SEMI
+   ;
+   
+generation_scheme 
+   : FOR generate__parameter_specification 
+   | IF condition
+   ;
+   
+generic_clause 
+   : GENERIC LPAREN generic_list RPAREN SEMI
+   ;
+   
+generic_list 
+   : generic__interface_list
+   ;
+   
+generic_map_aspect 
+   : GENERIC MAP LPAREN generic__association_list RPAREN
+   ;
+   
+#graphic_character 
+#   : basic_graphic_character 
+#   | lower_case_letter 
+#   | other_special_character
+#   ;
+   
+group_constituent 
+   : name 
+   | CHARACTER_LITERAL
+   ;
+   
+group_constituent_list 
+   : group_constituent { COMMA group_constituent }
+   ;
+   
+group_declaration 
+   : GROUP identifier COLON group_template__name LPAREN group_constituent_list RPAREN SEMI
+   ;
+   
+group_template_declaration 
+   : GROUP identifier IS LPAREN entity_class_entry_list RPAREN SEMI
+   ;
+   
+guarded_signal_specification 
+   : guarded__signal_list COLON type_mark
+   ;
+   
+identifier 
+   : BASIC_IDENTIFIER 
+   | EXTENDED_IDENTIFIER
+   ;
+   
+identifier_list 
+   : identifier { COMMA identifier }
+   ;
+
+#----------------------------------------------------
+# Page:10
+#----------------------------------------------------
+   
+if_statement 
+   : [ if__label COLON ] IF condition THEN sequence_of_statements { ELSIF condition THEN sequence_of_statements } [ ELSE sequence_of_statements ] END IF [ if__label ] SEMI
+   ;
+   
+incomplete_type_declaration 
+   : TYPE identifier SEMI
+   ;
+   
+index_constraint 
+   : LPAREN discrete_range { COMMA discrete_range } RPAREN
+   ;
+   
+index_specification 
+   : discrete_range 
+   | static__expression
+   ;
+   
+index_subtype_definition 
+   : type_mark RANGE BOX
+   ;
+   
+indexed_name 
+   : prefix LPAREN expression { COMMA expression } RPAREN
+   ;
+   
+instantiated_unit 
+   : [ COMPONENT ] component__name 
+   | ENTITY entity__name [ LPAREN architecture__identifier RPAREN ] 
+   | CONFIGURATION configuration__name
+   ;
+   
+instantiation_list 
+   : instantiation__label { COMMA instantiation__label } 
+   | OTHERS 
+   | ALL
+   ;
+   
+#integer 
+#   : digit { [ underline ] digit }
+#   ;
+   
+integer_type_definition 
+   : range_constraint
+   ;
+   
+interface_constant_declaration 
+   : CONSTANT identifier_list COLON [ IN ] subtype_indication [ VARASGN static__expression ]
+   ;
+   
+interface_declaration 
+   : interface_constant_declaration 
+   | interface_signal_declaration 
+   | interface_variable_declaration 
+   | interface_file_declaration
+   ;
+   
+interface_element 
+   : interface_declaration
+   ;
+   
+interface_file_declaration 
+   : FILE identifier_list COLON subtype_indication
+   ;
+   
+interface_list 
+   : interface_element { SEMI interface_element }
+   ;
+
+#----------------------------------------------------
+# Page:11
+#----------------------------------------------------
+   
+
+interface_signal_declaration 
+   : [ SIGNAL ] identifier_list COLON [ mode ] subtype_indication [ BUS ] [ VARASGN static__expression ]
+   ;
+   
+interface_variable_declaration 
+   : [ VARIABLE ] identifier_list COLON [ mode ] subtype_indication [ VARASGN static__expression ]
+   ;
+   
+iteration_scheme 
+   : WHILE condition 
+   | FOR loop__parameter_specification
+   ;
+   
+label
+   : identifier
+   ;
+   
+#letter 
+#   : upper_case_letter 
+#   | lower_case_letter
+#   ;
+   
+#letter_or_digit 
+#   : letter 
+#   | digit
+#   ;
+   
+library_clause 
+   : LIBRARY logical_name_list SEMI
+   ;
+   
+library_unit 
+   : primary_unit 
+   | secondary_unit
+   ;
+   
+literal 
+   : numeric_literal 
+   | enumeration_literal 
+   | STRING_LITERAL 
+   | bit_string_literal 
+   | NULL
+   ;
+   
+logical_name 
+   : identifier
+   ;
+   
+logical_name_list 
+   : logical_name { COMMA logical_name }
+   ;
+   
+#logical_operator 
+#   : AND 
+#   | OR 
+#   | NAND 
+#   | NOR 
+#   | XOR 
+#   | XNOR
+#   ;
+   
+loop_statement 
+   : [ loop__label COLON ] [ iteration_scheme ] LOOP sequence_of_statements END LOOP [ loop__label ] SEMI
+   ;
+   
+#miscellaneous_operator 
+#   : DOUBLESTAR 
+#   | ABS 
+#   | NOT
+#   ;
+   
+mode
+   : IN 
+   | OUT 
+   | INOUT 
+   | BUFFER 
+   | LINKAGE
+   ;
+   
+multiplying_operator
+   : MUL 
+   | DIV 
+   | MOD 
+   | REM
+   ;
+   
+name 
+   : simple_name 
+   | operator_symbol 
+   | selected_name 
+   | indexed_name 
+   | slice_name 
+   | attribute_name
+   ;
+
+#----------------------------------------------------
+# Page:12
+#----------------------------------------------------
+
+next_statement 
+   : [ LABEL COLON ] NEXT [ loop__label ] [ WHEN condition ] SEMI
+   ;
+   
+null_statement 
+   : [ LABEL COLON ] NULL SEMI
+   ;
+   
+numeric_literal 
+   : abstract_literal 
+   | physical_literal
+   ;
+   
+#object_declaration 
+#   : constant_declaration 
+#   | signal_declaration 
+#   | variable_declaration 
+#   | file_declaration
+#   ;
+   
+operator_symbol 
+   : STRING_LITERAL
+   ;
+   
+options 
+   : [ GUARDED ] [ delay_mechanism ]
+   ;
+   
+package_body 
+   : PACKAGE BODY package__simple_name IS package_body_declarative_part END [ PACKAGE BODY ] [ package__simple_name ] SEMI
+   ;
+   
+package_body_declarative_item 
+   : subprogram_declaration 
+   | subprogram_body 
+   | type_declaration 
+   | subtype_declaration 
+   | constant_declaration 
+   | shared__variable_declaration 
+   | file_declaration 
+   | alias_declaration 
+   | use_clause 
+   | group_template_declaration 
+   | group_declaration
+   ;
+   
+package_body_declarative_part 
+   : { package_body_declarative_item }
+   ;
+   
+package_declaration 
+  : PACKAGE identifier IS package_declarative_part END [ PACKAGE ] [ package__simple_name ] SEMI
+  ;
+
+#----------------------------------------------------
+# Page:13
+#----------------------------------------------------
+  
+package_declarative_item 
+  : subprogram_declaration 
+  | type_declaration 
+  | subtype_declaration 
+  | constant_declaration 
+  | signal_declaration 
+  | shared__variable_declaration 
+  | file_declaration 
+  | alias_declaration 
+  | component_declaration 
+  | attribute_declaration 
+  | attribute_specification 
+  | disconnection_specification 
+  | use_clause 
+  | group_template_declaration 
+  | group_declaration
+  ;
+  
+package_declarative_part 
+  : { package_declarative_item }
+  ;
+  
+parameter_specification 
+  : identifier IN discrete_range
+  ;
+   
+physical_literal 
+  : [ abstract_literal ] unit__name
+  ;
+  
+physical_type_definition 
+  : range_constraint UNITS base_unit_declaration { secondary_unit_declaration } END UNITS [ physical_type__simple_name ]
+  ;
+  
+port_clause 
+  : PORT LPAREN port_list RPAREN SEMI
+  ;
+  
+port_list 
+  : port__interface_list
+  ;
+  
+port_map_aspect 
+  : PORT MAP LPAREN port__association_list RPAREN
+  ;
+  
+prefix
+   : name
+   | function_call
+   ;
+   
+primary 
+   : name
+   | literal
+   | aggregate
+   | function_call
+   | qualified_expression
+   | type_conversion
+   | allocator
+   | LPAREN expression RPAREN
+   ;
+   
+#----------------------------------------------------
+# Page:14 ##
+#----------------------------------------------------
+
+primary_unit 
+  : entity_declaration
+  | configuration_declaration
+  | package_declaration
+  ;
+  
+procedure_call 
+  : procedure__name [ LPAREN actual_parameter_part RPAREN ]
+  ;
+  
+procedure_call_statement 
+  : [ label COLON ] procedure_call SEMI
+  ;
+  
+process_declarative_item 
+   : subprogram_declaration
+   | subprogram_body
+   | type_declaration
+   | subtype_declaration
+   | constant_declaration
+   | variable_declaration
+   | file_declaration
+   | alias_declaration
+   | attribute_declaration
+   | attribute_specification
+   | use_clause
+   | group_template_declaration
+   | group_declaration
+   ;
+   
+process_declarative_part 
+   : { process_declarative_item }
+   ;
+   
+process_statement 
+   : [ process__label COLON ] [ POSTPONED ] PROCESS [ LPAREN sensitivity_list RPAREN ] [ IS ]  process_declarative_part BEGIN process_statement_part END [ POSTPONED ] PROCESS [ process__label ] SEMI
+   ;
+   
+process_statement_part 
+   : { sequential_statement }
+   ;
+   
+protected_type_body 
+   : PROTECTED BODY protected_type_body_declarative_part END PROTECTED BODY [ protected_type__simple_name ]
+   ;
+
+
+#----------------------------------------------------
+# Page:15
+#----------------------------------------------------
+   
+protected_type_body_declarative_item 
+  : subprogram_declaration 
+  | subprogram_body 
+  | type_declaration 
+  | subtype_declaration 
+  | constant_declaration 
+  | variable_declaration 
+  | file_declaration 
+  | alias_declaration 
+  | attribute_declaration 
+  | attribute_specification 
+  | use_clause 
+  | group_template_declaration 
+  | group_declaration
+  ;
+  
+protected_type_body_declarative_part 
+  : { protected_type_body_declarative_item }
+  ;
+  
+protected_type_declaration 
+  : PROTECTED protected_type_declarative_part END PROTECTED [ protected_type__simple_name ]
+  ;
+protected_type_declarative_item 
+  : subprogram_specification 
+  | attribute_specification 
+  | use_clause
+  ;
+  
+protected_type_declarative_part 
+  : { protected_type_declarative_item }
+  ;
+  
+protected_type_definition 
+  : protected_type_declaration 
+  | protected_type_body
+  ;
+  
+qualified_expression 
+  : type_mark APOSTROPHE LPAREN expression RPAREN 
+  | type_mark APOSTROPHE aggregate
+  ;
+  
+range
+  : range__attribute_name 
+  | simple_expression direction simple_expression
+  ;
+  
+range_constraint 
+  : RANGE range
+  ;
+  
+record_type_definition 
+  : RECORD element_declaration { element_declaration } END RECORD [ record_type__simple_name ]
+  ;
+  
+relation 
+  : shift_expression [ relational_operator shift_expression ]
+  ;
+  
+relational_operator 
+  : EQ 
+  | NEQ 
+  | LOWERTHAN 
+  | LE 
+  | GREATERTHAN 
+  | GE
+  ;
+
+#----------------------------------------------------
+# Page:16
+#----------------------------------------------------
+  
+report_statement 
+  : [ LABEL COLON ] REPORT expression [ SEVERITY expression ] SEMI
+  ;
+  
+return_statement 
+  : [ LABEL COLON ] RETURN [ expression ] SEMI
+  ;
+  
+scalar_type_definition 
+  : enumeration_type_definition 
+  | integer_type_definition 
+  | floating_type_definition 
+  | physical_type_definition
+  ;
+  
+secondary_unit 
+  : architecture_body 
+  | package_body
+  ;
+  
+secondary_unit_declaration 
+  : identifier EQ physical_literal SEMI
+  ;
+  
+selected_name 
+  : prefix DOT suffix
+  ;
+  
+selected_signal_assignment 
+  : WITH expression SELECT target LE options selected_waveforms SEMI
+  ;
+  
+selected_waveforms 
+  : { waveform WHEN choices COMMA } waveform WHEN choices
+  ;
+  
+sensitivity_clause 
+  : ON sensitivity_list
+  ;
+  
+sensitivity_list 
+  : signal__name { COMMA signal__name }
+  ;
+  
+sequence_of_statements 
+  : { sequential_statement }
+  ;
+  
+sequential_statement 
+  : wait_statement 
+  | assertion_statement 
+  | report_statement 
+  | signal_assignment_statement 
+  | variable_assignment_statement 
+  | procedure_call_statement 
+  | if_statement 
+  | case_statement 
+  | loop_statement 
+  | next_statement 
+  | exit_statement 
+  | return_statement 
+  | null_statement
+  ;
+  
+shift_expression 
+  : simple_expression [ shift_operator simple_expression ]
+  ;
+  
+shift_operator 
+  : SLL 
+  | SRL 
+  | SLA 
+  | SRA 
+  | ROL 
+  | ROR
+  ;
+
+#----------------------------------------------------
+# Page:17
+#----------------------------------------------------
+
+sign 
+  : PLUS 
+  | MINUS
+  ;
+   
+signal_assignment_statement 
+  : [ LABEL COLON ] target LE [ delay_mechanism ] waveform SEMI
+  ;
+  
+signal_declaration 
+  : SIGNAL identifier_list COLON subtype_indication [ signal_kind ] [ VARASGN expression ] SEMI
+  ;
+  
+signal_kind 
+  : REGISTER 
+  | BUS
+  ;
+  
+signal_list 
+  : signal__name { COMMA signal__name } 
+  | OTHERS 
+  | ALL
+  ;
+  
+signature 
+  : [ [ type_mark { COMMA type_mark } ] [ RETURN type_mark ] ]
+  ;
+  
+simple_expression 
+  : [ sign ] term { adding_operator term }
+  ;
+  
+simple_name 
+  : identifier
+  ;
+  
+slice_name 
+  : prefix LPAREN discrete_range RPAREN
+  ;
+  
+#STRING_LITERAL 
+#  : DBLQUOTE { graphic_character } DBLQUOTE
+#  ;
+  
+subprogram_body 
+  : subprogram_specification IS subprogram_declarative_part BEGIN subprogram_statement_part END [ subprogram_kind ] [ designator ] SEMI
+  ;
+  
+subprogram_declaration 
+  : subprogram_specification SEMI
+  ;
+  
+subprogram_declarative_item 
+  : subprogram_declaration 
+  | subprogram_body 
+  | type_declaration 
+  | subtype_declaration 
+  | constant_declaration 
+  | variable_declaration 
+  | file_declaration 
+  | alias_declaration 
+  | attribute_declaration 
+  | attribute_specification 
+  | use_clause 
+  | group_template_declaration 
+  | group_declaration
+  ;
+
+#----------------------------------------------------
+# Page:18
+#----------------------------------------------------
+  
+subprogram_declarative_part 
+  : { subprogram_declarative_item }
+  ;
+  
+subprogram_kind 
+  : PROCEDURE 
+  | FUNCTION
+  ;
+  
+subprogram_specification 
+  : PROCEDURE designator [ LPAREN formal_parameter_list RPAREN ] 
+  | [ PURE | IMPURE ] FUNCTION designator [ LPAREN formal_parameter_list RPAREN ] RETURN type_mark
+  ;
+  
+subprogram_statement_part 
+  : { sequential_statement }
+  ;
+  
+subtype_declaration 
+  : SUBTYPE identifier IS subtype_indication SEMI
+  ;
+  
+subtype_indication 
+  : [ resolution_function__name ] type_mark [ constraint ]
+  ;
+  
+suffix 
+  : simple_name 
+  | CHARACTER_LITERAL 
+  | operator_symbol 
+  | ALL
+  ;
+  
+target 
+  : name 
+  | aggregate
+  ;
+  
+term 
+  : factor { multiplying_operator factor }
+  ;
+  
+timeout_clause 
+  : FOR time__expression
+  ;
+  
+type_conversion 
+  : type_mark LPAREN expression RPAREN
+  ;
+  
+type_declaration 
+  : full_type_declaration 
+  | incomplete_type_declaration
+  ;
+  
+type_definition 
+  : scalar_type_definition 
+  | composite_type_definition 
+  | access_type_definition 
+  | file_type_definition 
+  | protected_type_definition
+  ;
+  
+type_mark 
+  : type__name 
+  | subtype__name
+  ;
+  
+unconstrained_array_definition 
+  : ARRAY LPAREN index_subtype_definition { COMMA index_subtype_definition } RPAREN OF element__subtype_indication
+  ;
+
+#----------------------------------------------------
+# Page:19
+#----------------------------------------------------
+  
+use_clause 
+  : USE selected_name { COMMA selected_name } SEMI
+  ;
+  
+variable_assignment_statement 
+  : [ LABEL COLON ] target VARASGN expression SEMI
+  ;
+  
+variable_declaration 
+  : [ SHARED ] VARIABLE identifier_list COLON subtype_indication [ VARASGN expression ] SEMI
+  ;
+  
+wait_statement 
+  : [ LABEL COLON ] WAIT [ sensitivity_clause ] [ condition_clause ] [ timeout_clause ] SEMI
+  ;
+  
+waveform 
+  : waveform_element { COMMA waveform_element } 
+  | UNAFFECTED
+  ;
+ 
+waveform_element 
+  : value__expression [ AFTER time__expression ] 
+  | NULL [ AFTER time__expression ]
+  ;
+  
