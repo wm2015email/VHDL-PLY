@@ -66,8 +66,8 @@ tokens = [
     'END', 'ENTITY', 'ELSE', 'ELSIF', 'EXIT', 'FILE', 'FOR', 'FUNCTION', 'GENERATE',
     'GENERIC', 'GROUP', 'GUARDED', 'IF', 'IMPURE', 'INERTIAL', 'INOUT', 'IN', 'IS',
     'LABEL', 'LIBRARY', 'LIMIT', 'LINKAGE', 'LITERAL', 'LOOP', 'MAP', 'MOD', 'NAND',
-    'NATURE', 'NEW', 'NEXT', 'NOISE', 'NOR', 'NOT', 'NULL_', 'OF', 'ON', 'OPEN', 'OR',
-    'OTHERS', 'OUT', 'PACKAGE', 'PORT', 'POSTPONED', 'PROCESS', 'PROCEDURE',
+    'NATURE', 'NEW', 'NEXT', 'NOISE', 'NOR', 'NOT', 'NULL', 'OF', 'ON', 'OPEN', 'OR',
+    'OTHERS', 'OUT', 'PACKAGE', 'PORT', 'POSTPONED', 'PROTECTED', 'PROCESS', 'PROCEDURE',
     'PROCEDURAL', 'PURE', 'QUANTITY', 'RANGE', 'REVERSE_RANGE', 'REJECT', 'REM',
     'RECORD', 'REFERENCE', 'REGISTER', 'REPORT', 'RETURN', 'ROL', 'ROR', 'SELECT',
     'SEVERITY', 'SHARED', 'SIGNAL', 'SLA', 'SLL', 'SPECTRUM', 'SRA', 'SRL', 'SUBNATURE',
@@ -116,16 +116,6 @@ def t_STRING_LITERAL(t):
 def t_whitespace(t):
     r'[ \t]+'
     pass
-
-    
-## Define a rule for keywords (case-insensitive)
-#def t_KEYWORD(t):
-#    r'(?i)ABS|ACCESS|ACROSS|AFTER|ALIAS|ALL|AND|ARCHITECTURE|ARRAY|ASSERT|ATTRIBUTE|BEGIN|BLOCK|BODY|BREAK|BUFFER|BUS|CASE|COMPONENT|CONFIGURATION|CONSTANT|DISCONNECT|DOWNTO|END|ENTITY|ELSE|ELSIF|EXIT|FILE|FOR|FUNCTION|GENERATE|GENERIC|GROUP|GUARDED|IF|IMPURE|INERTIAL|INOUT|IN|IS|LABEL|LIBRARY|LIMIT|LINKAGE|LITERAL|LOOP|MAP|MOD|NAND|NATURE|NEW|NEXT|NOISE|NOR|NOT|NULL_|OF|ON|OPEN|OR|OTHERS|OUT|PACKAGE|PORT|POSTPONED|PROCESS|PROCEDURE|PROCEDURAL|PURE|QUANTITY|RANGE|REVERSE_RANGE|REJECT|REM|RECORD|REFERENCE|REGISTER|REPORT|RETURN|ROL|ROR|SELECT|SEVERITY|SHARED|SIGNAL|SLA|SLL|SPECTRUM|SRA|SRL|SUBNATURE|SUBTYPE|TERMINAL|THEN|THROUGH|TOLERANCE|TO|TRANSPORT|TYPE|UNAFFECTED|UNITS|UNTIL|USE|VARIABLE|WAIT|WITH|WHEN|WHILE|XNOR|XOR'
-#    # This reassigns type from KEYWORD to the Matched value. 
-#    t.type = t.value.upper()
-#    t.lineno = t.lexer.lineno
-#    t.lexpos = t.lexer.lexpos
-#    return t
 
 
 # Define the regular expressions for the tokens
@@ -190,7 +180,7 @@ keywords = {
     "DISCONNECT", "DOWNTO", "END", "ENTITY", "ELSE", "ELSIF", "EXIT", "FILE", "FOR", "FUNCTION", "GENERATE",
     "GENERIC", "GROUP", "GUARDED", "IF", "IMPURE", "INERTIAL", "INOUT", "IN", "IS", "LABEL", "LIBRARY", "LIMIT",
     "LINKAGE", "LITERAL", "LOOP", "MAP", "MOD", "NAND", "NATURE", "NEW", "NEXT", "NOISE", "NOR", "NOT", "NULL",
-    "OF", "ON", "OPEN", "OR", "OTHERS", "OUT", "PACKAGE", "PORT", "POSTPONED", "PROCESS", "PROCEDURE", 
+    "OF", "ON", "OPEN", "OR", "OTHERS", "OUT", "PACKAGE", "PORT", "POSTPONED", "PROCESS", "PROTECTED", "PROCEDURE", 
     "PROCEDURAL", "PURE", "QUANTITY", "RANGE", "REVERSE_RANGE", "REJECT", "REM", "RECORD", "REFERENCE", 
     "REGISTER", "REPORT", "RETURN", "ROL", "ROR", "SELECT", "SEVERITY", "SHARED", "SIGNAL", "SLA", "SLL", 
     "SPECTRUM", "SRA", "SRL", "SUBNATURE", "SUBTYPE", "TERMINAL", "THEN", "THROUGH", "TOLERANCE", "TO", 
@@ -212,6 +202,7 @@ def t_BASIC_IDENTIFIER(t):
 #t_BIT_STRING_LITERAL_OCTAL  = r'O"([0-7_]+)"'
 #t_BIT_STRING_LITERAL_HEX    = r'X"([0-9A-F_]+)"'
 #t_REAL_LITERAL              = r'(\d+)\.(\d+)([eE][+\-]?\d+)?'
+
 #t_EXTENDED_IDENTIFIER       = r'\\([\w&\'()+,./:;<=| \[\]@#-]+)\\'
 #t_CHARACTER_LITERAL         = r"'.'"
 #t_STRING_LITERAL            = r'"([^"\n\r]|"")*"'
@@ -310,8 +301,8 @@ def lexer_test1():
     downto END entity ELSE elsif EXIT file FOR function
     generate GENERIC group GUARDED if impure IN inertial
     inout is LABEL library LIMIT linkage literal loop MAP
-    MOD nand NATURE new NEXT noise NOR not NULL_ of on OPEN
-    or OTHERS out PACKAGE port POSTPONED process PROCEDURE
+    MOD nand NATURE new NEXT noise NOR not NULL of on OPEN
+    or OTHERS out PACKAGE port PROTECTED POSTPONED process PROCEDURE
     PROCEDURAL pure QUANTITY range REVERSE_RANGE reject REM
     record REFERENCE register REPORT return ROL ROR select
     SEVERITY shared SIGNAL SLA SLL spectrum SRA SRL subnature

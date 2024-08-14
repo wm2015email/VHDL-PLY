@@ -10,8 +10,16 @@
 use strict;
 use warnings;
 
-my $input_file = 'vhdl.g4'; # Change this to your actual file _
 my $output_file = 'vhdlply_yacc.py';
+
+my $input_file  = 'rules_vhdl.g4';         # modified antlr project vhdl rules
+#my $input_file  = 'rules_vhdl2000.lmr';    # vhdl-2000 lmr rules
+
+
+my $lmr_mode = 0;
+if ($input_file =~ /.lmr$/) {
+   $lmr_mode = 1;
+}
 
 open(my $in,  '<', $input_file) or die "Could not open file '$input_file' $!";
 open(my $out, '>', $output_file) or die "Could not open file '$output_file' $!";
@@ -50,23 +58,39 @@ my %not_a_token = (
 
 while (my $line = <$in>) {
     chomp $line;
-	
-	
+		
 	$line =~ s/^\s*//;
 	$line =~ s/\s*$//;
-	
-	# REMOVER ANTLR Comments
-    $line =~ s/^\/\/.*$//;
-	
-    # REMOVE EOF TOKEN
-    $line =~ s/\s*\bEOF\b\s*//g;
 
-    # hacky fix
-    $line =~ s/\(: identifier\)\s*$/ identifier /g;	
+    if ($lmr_mode) {
+		$line =~ s/^\s*#.*$//;
+
+        $line =~ s/\b(\w+)__(\w+)\b/$2/g;
+		
+		# zero or one 
+		$line =~ s/\[/(/g;
+		$line =~ s/\]/)?/g;
+
+        # zero or more
+		$line =~ s/\{/(/g;
+		$line =~ s/\}/)*/g;
+		
+	}
 	
-	# Remove non-capture groups?!??  (: ... ) =>  ( )
-	$line =~ s/\(\:/(/g;
+	# g4 mode
+	else {
+        $line =~ s/^\/\/.*$//;
+		
+        # REMOVE EOF TOKEN
+        $line =~ s/\s*\bEOF\b\s*//g;
+
+        # hacky fix
+        $line =~ s/\(: identifier\)\s*$/ identifier /g;	
 	
+	    # Remove non-capture groups?!??  (: ... ) =>  ( )
+	    $line =~ s/\(\:/(/g;
+	}
+		
 	next if ($line =~ /^$/);
 		
 	if ($state eq 0) {
@@ -91,12 +115,12 @@ while (my $line = <$in>) {
 	    elsif ($line eq ";") {
 			$state = 0;
 		    # skip token rules
-		    if ($rname =~ /^[A-Z0-9_]+$/) {
-				if (!defined($not_a_token{$rname})) {
-			        #print "SKIP TOKEN RULE: $rule\n";
-			        next;
-				}
-		    }
+		    #if ($rname =~ /^[A-Z0-9_]+$/) {
+			#	if (!defined($not_a_token{$rname})) {
+			#        #print "SKIP TOKEN RULE: $rule\n";
+			#        next;
+		    #	}
+		    #}
 		    $rline = "${rline}\n";			
 			push(@rule_list, $rline);
 		}
@@ -135,6 +159,7 @@ for my $rule_curr (@rule_list) {
 	# Transform1
 	#-------------------------------------
 	while (1) {
+
 		#regex: '(' anything until matching ')' <'?'|'+'|'*'>
         my @result = get_altr_group($rule_curr);
 		last if (@result == 0);
@@ -246,6 +271,24 @@ for my $rule_curr (@rule_list) {
 	print $out "${indent}if debug_def: print(\"\\n=> $rname\", p[1:])\n";
 	print $out "${indent}p[0] = p[1:]\n";
 	print $out "\n";
+	
+	if (${rname} eq "architecture_body") {
+        print $out "${indent}type   = \"arch\"\n";
+        print $out "${indent}name   = p[2][0]\n";
+        print $out "${indent}entity = p[4][0]\n";
+        print $out "${indent}loc  = f\"{p.lexer.file}:{p.lineno(1)}:\"\n";
+        print $out "${indent}print(f\"===> {loc:<20} {type:<10} {entity:<10} of:{name:<10} \")\n";
+	    print $out "\n";
+	}
+	
+	if (${rname} eq "entity_declaration") {
+        print $out "${indent}type   = \"entity\"\n";
+        print $out "${indent}name   = p[2][0]\n";
+        print $out "${indent}loc  = f\"{p.lexer.file}:{p.lineno(1)}:\"\n";
+        print $out "${indent}print(f\"===> {loc:<20} {type:<10} {name:<10} \")\n";
+	    print $out "\n";
+	}
+
 }
 
 
@@ -266,19 +309,24 @@ my @out = (
   "log = logging.getLogger('ply')",
   "logging.basicConfig(",
   "    level = logging.DEBUG,",
-  "    filename = \"parselog.txt\",",
+  "    filename = yacc_debug_file,",
   "    filemode = \"w\",",
   "    format = \"%(filename)10s:%(lineno)4d:%(message)s\"",
   ")",
   "",
-  "# Build the parser",
-  "if debug_yacc:",
-  "    print(f\"creating yacc debug file: {yacc_debug_file}\")",
-  "    parser = yacc.yacc(debug=True, errorlog=log)",
-  "else:",
-  "    parser = yacc.yacc()",
-  ""
-);
+  "parser = None",
+  "",
+  "def new_parser(start):",
+  "    global parser",
+  "",
+  "    if debug_yacc:",
+  "        print(f\"creating yacc debug file: {yacc_debug_file}\")",
+  "        parser = yacc.yacc(debug=True, errorlog=log, start=start)",
+  "    else:",
+  "        parser = yacc.yacc()",
+  "",
+  "new_parser(\"design_file\")",
+ );
 
 
 

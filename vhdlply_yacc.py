@@ -111,13 +111,12 @@ def p_architecture_body(p):
     '''
     if debug_def: print("\n=> architecture_body", p[1:])
     p[0] = p[1:]
-    
+
     type   = "arch"
     name   = p[2][0]
     entity = p[4][0]
     loc  = f"{p.lexer.file}:{p.lineno(1)}:"
     print(f"===> {loc:<20} {type:<10} {entity:<10} of:{name:<10} ")
-    
 
 def p_architecture_declarative_part(p):
     '''
@@ -689,12 +688,11 @@ def p_entity_declaration(p):
     '''
     if debug_def: print("\n=> entity_declaration", p[1:])
     p[0] = p[1:]
-    
-    type = "entity"
-    name = p[2][0]
+
+    type   = "entity"
+    name   = p[2][0]
     loc  = f"{p.lexer.file}:{p.lineno(1)}:"
     print(f"===> {loc:<20} {type:<10} {name:<10} ")
-
 
 def p_entity_declarative_item(p):
     '''
@@ -1127,7 +1125,7 @@ def p_library_unit(p):
 
 def p_literal(p):
     '''
-    literal : NULL_
+    literal : NULL
         | BIT_STRING_LITERAL
         | STRING_LITERAL
         | enumeration_literal
@@ -1697,7 +1695,7 @@ def p_sequential_statement(p):
         | next_statement
         | exit_statement
         | return_statement
-        | label_colon_a1mark NULL_ SEMI
+        | label_colon_a1mark NULL SEMI
         | break_statement
         | procedure_call_statement
     '''
@@ -1809,7 +1807,7 @@ def p_simultaneous_statement(p):
         | simultaneous_if_statement
         | simultaneous_case_statement
         | simultaneous_procedural_statement
-        | label_colon_a1mark NULL_ SEMI
+        | label_colon_a1mark NULL SEMI
     '''
     if debug_def: print("\n=> simultaneous_statement", p[1:])
     p[0] = p[1:]
@@ -3387,16 +3385,21 @@ import logging
 log = logging.getLogger('ply')
 logging.basicConfig(
     level = logging.DEBUG,
-    filename = "parselog.txt",
+    filename = yacc_debug_file,
     filemode = "w",
     format = "%(filename)10s:%(lineno)4d:%(message)s"
 )
 
-# Build the parser
-if debug_yacc:
-    print(f"creating yacc debug file: {yacc_debug_file}")
-    parser = yacc.yacc(debug=True, errorlog=log)
-else:
-    parser = yacc.yacc()
+parser = None
 
+def new_parser(start):
+    global parser
+
+    if debug_yacc:
+        print(f"creating yacc debug file: {yacc_debug_file}")
+        parser = yacc.yacc(debug=True, errorlog=log, start=start)
+    else:
+        parser = yacc.yacc()
+
+new_parser("design_file")
 
