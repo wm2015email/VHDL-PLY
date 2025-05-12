@@ -31,7 +31,7 @@ print $out "#!/usr/bin/python3\n";
 print $out "\n";
 print $out "# PLY Yacc script generated from vhdl.g4\n";
 print $out "import ply.yacc as yacc\n";
-print $out "from vhdlply_lexer import tokens\n\n";  # Assuming a separate vhdl_lex.py file for tokens
+print $out "from vhdlply_lexer import tokens\n\n";  
 print $out "\n";
 print $out "start =  'design_file'\n";
 print $out "\n";
@@ -114,13 +114,6 @@ while (my $line = <$in>) {
 	    }
 	    elsif ($line eq ";") {
 			$state = 0;
-		    # skip token rules
-		    #if ($rname =~ /^[A-Z0-9_]+$/) {
-			#	if (!defined($not_a_token{$rname})) {
-			#        #print "SKIP TOKEN RULE: $rule\n";
-			#        next;
-		    #	}
-		    #}
 		    $rline = "${rline}\n";			
 			push(@rule_list, $rline);
 		}
